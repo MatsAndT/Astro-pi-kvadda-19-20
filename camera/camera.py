@@ -1,14 +1,14 @@
 import time
 import cv2
+import atexit
 
-from io import BytesIO
-from picamera import PiCamera
-from picamera.array import PiRGBArray
-
-camera = PiCamera()
-raw_capture = PiRGBArray(camera)
-time.sleep(0.3) # Camera warmup
+capture = cv2.VideoCapture(0)
+capture.set(3, 2592)
+capture.set(4, 1944)
+capture.set(5, 10)
+atexit.register(capture.release)
+time.sleep(1) # Camera warmup
 
 def capture_image():
-    camera.capture(raw_capture, format="bgr")
-    return raw_capture.array
+    _, frame = capture.read()
+    return frame
