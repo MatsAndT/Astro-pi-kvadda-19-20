@@ -44,7 +44,7 @@ class DataManager():
             print(e)
 
 
-    def insert_data(self, conn, data):
+    def insert_data(self, conn, img, magnetometer):
         """
         Inserting data into sensor_data tabel
         :param conn: Connection object
