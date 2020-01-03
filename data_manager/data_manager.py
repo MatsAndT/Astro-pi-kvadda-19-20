@@ -48,7 +48,7 @@ class DataManager():
         """
         Create a new project into the sensor table
         :param conn: Connection object
-        :param data: Data to be inserted
+        :param img: Image to be inserted
         :return: project id
 
         Id is auto set : last++
