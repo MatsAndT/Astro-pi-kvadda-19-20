@@ -33,7 +33,7 @@ class DataManager():
         If the table is stored correctly then a True is retuned, if not a False is retuned
         """
         # TODO add the parameter for what data
-        table = """CREATE TABLE IF NOT EXISTS sensor (
+        table = """CREATE TABLE IF NOT EXISTS sensor_data (
             id integer PRIMARY KEY,
             time timestamp,
         )"""
