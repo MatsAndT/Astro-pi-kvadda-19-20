@@ -1,6 +1,6 @@
 import sqlite3
 from sqlite3 import Error
-import datetime
+from datetime import datetime
 
 
 class DataManager():
