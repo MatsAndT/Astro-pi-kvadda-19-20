@@ -28,7 +28,9 @@ class DataManager():
     def create_table(self, conn):
         """ create a table from the table varibal
         :param conn: Connection object
-        :return:
+        :return: True
+
+        If the table is stored correctly then a True is retuned, if not a False is retuned
         """
         # TODO add the parameter for what data
         table = """CREATE TABLE IF NOT EXISTS sensor (
