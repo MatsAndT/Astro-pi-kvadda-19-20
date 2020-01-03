@@ -16,6 +16,8 @@ class DataManager():
             specified by db_file
         :param db_file: database file
         :return: Connection object or None
+
+        If link was not made then Noen is returned
         """
         conn = None
         try:
