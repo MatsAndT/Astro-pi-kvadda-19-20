@@ -35,8 +35,11 @@ class DataManager():
         # TODO add the parameter for what data
         table = """CREATE TABLE IF NOT EXISTS sensor_data (
             id integer PRIMARY KEY,
-            time timestamp,
-        )"""
+            time timestamp NOT NULL,
+            img blob,
+            magnetometer real NOT NULL
+        );"""
+
         try:
             c = conn.cursor()
             c.execute(table)
