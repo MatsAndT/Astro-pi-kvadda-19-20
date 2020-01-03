@@ -58,10 +58,3 @@ class DataManager():
         cur.execute(sql, data)
         return cur.lastrowid
 
-class Data():
-    def __init__(self):
-        super().__init__()
-        # TODO add the parameter for what data
-        
-    id
-    time = datetime.datetime.now()
