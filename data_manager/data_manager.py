@@ -50,6 +50,13 @@ class DataManager():
         :param conn: Connection object
         :param data: Data to be inserted
         :return: project id
+
+        Id is auto set : last++
+        Time is a timestamp : saved as timestamp
+        Img is stored as a blob
+        Magnetometrer x y z raw data in uT micro teslas : saved as real)
+
+        If Error is threw then Noen is returned 
         """
         # TODO add the parameter for what data
         sql = ''' INSERT INTO sensor_data(time,img,magnetometer)
