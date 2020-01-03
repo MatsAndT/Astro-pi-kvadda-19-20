@@ -52,7 +52,7 @@ class DataManager():
         :return: project id
         """
         # TODO add the parameter for what data
-        sql = ''' INSERT INTO sensor(name,begin_date,end_date)
+        sql = ''' INSERT INTO sensor_data(time,img,magnetometer)
                 VALUES(?,?,?) '''
         
         try:
