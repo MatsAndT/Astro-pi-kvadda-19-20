@@ -40,8 +40,10 @@ class DataManager():
         try:
             c = conn.cursor()
             c.execute(table)
+            return True
         except Error as e:
             print(e)
+            return False
 
 
     def insert_data(self, conn, img, magnetometer):
