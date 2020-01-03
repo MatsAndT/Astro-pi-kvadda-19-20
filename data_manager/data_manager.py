@@ -4,8 +4,8 @@ from datetime import datetime
 
 
 class DataManager():
-    db_name = r"./astropi.db" # Path to Sqlite3 DB
-    conn = sqlite3.connect # Is set to db after create_connection is run
+    db_name = r"./astropi.sqlite"
+    conn = None # Is set to db after create_connection is run
 
     def create_connection(self):
         """ create a database connection to the SQLite database
@@ -13,9 +13,8 @@ class DataManager():
         :param db_file: database file
         :return: Connection object or None
 
-        If link was not made then Noen is returned
+        If link was not made then None is returned
         """
-        conn = None
         try:
             conn = sqlite3.connect(self.db_name)
         except Error as e:
@@ -30,7 +29,7 @@ class DataManager():
 
         If the table is stored correctly then a True is retuned, if not a False is retuned
         """
-        # TODO add the parameter for what data
+        # TODO: add the parameter for what data
         table = """CREATE TABLE IF NOT EXISTS sensor_data (
             id integer PRIMARY KEY,
             time timestamp NOT NULL,
@@ -61,7 +60,7 @@ class DataManager():
 
         If Error is threw then Noen is returned 
         """
-        # TODO add the parameter for what data
+        # TODO: add the parameter for what data
         sql = ''' INSERT INTO sensor_data(time,img,magnetometer)
                 VALUES(?,?,?) '''
         
@@ -72,4 +71,3 @@ class DataManager():
         except Error as e:
             print(e)
             return None
-
