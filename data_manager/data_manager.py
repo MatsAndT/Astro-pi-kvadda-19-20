@@ -7,10 +7,6 @@ class DataManager():
     db_name = r"./astropi.db" # Path to Sqlite3 DB
     conn = sqlite3.connect # Is set to db after create_connection is run
 
-    def __init__(self):
-        super().__init__()
-        self.conn = sqlite3.connect(self.db_name)
-
     def create_connection(self):
         """ create a database connection to the SQLite database
             specified by db_file
