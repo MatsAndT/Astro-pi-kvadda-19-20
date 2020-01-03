@@ -46,7 +46,7 @@ class DataManager():
 
     def insert_data(self, conn, data):
         """
-        Create a new project into the sensor table
+        Inserting data into sensor_data tabel
         :param conn: Connection object
         :param img: Image to be inserted
         :return: project id
