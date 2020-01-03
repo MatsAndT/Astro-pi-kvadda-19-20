@@ -54,7 +54,12 @@ class DataManager():
         # TODO add the parameter for what data
         sql = ''' INSERT INTO sensor(name,begin_date,end_date)
                 VALUES(?,?,?) '''
-        cur = conn.cursor()
-        cur.execute(sql, data)
-        return cur.lastrowid
+        
+        try:
+            cur = conn.cursor()
+            cur.execute(sql, (datetime.now(), img, magnetometer))
+            return cur.lastrowid
+        except Error as e:
+            print(e)
+            return None
 
