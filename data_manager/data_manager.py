@@ -30,7 +30,7 @@ class DataManager():
 
         If the table is stored correctly then a True is retuned, if not a False is retuned
         """
-        # TODO: add the parameter for what data
+        
         table = """CREATE TABLE IF NOT EXISTS sensor_data (
             id integer PRIMARY KEY,
             time timestamp NOT NULL,
@@ -68,7 +68,7 @@ class DataManager():
 
         If Error is threw then Noen is returned 
         """
-        # TODO: add the parameter for what data
+        
         sql = ''' INSERT INTO sensor_data(time,img,magnetometer)
                 VALUES(?,?,?) '''
         
