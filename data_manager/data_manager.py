@@ -86,7 +86,6 @@ class DataManager():
         except Error as e:
             print(e)
             return None
-<<<<<<< HEAD
 
     def close(self, conn):
         """
@@ -109,6 +108,3 @@ class DataManager():
         except Error as e:
             print(e)
             return False
-
-=======
->>>>>>> 83204fe0e866501bde698707c1d9e82c929726d4
