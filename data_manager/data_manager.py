@@ -81,6 +81,7 @@ class DataManager():
             cur.execute(sql, (datetime.now(), img, magnetometer))
 
             # Save (commit) the changes
+            conn.commit()
 
             return cur.lastrowid
         except Error as e:
