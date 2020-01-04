@@ -47,6 +47,7 @@ class DataManager():
             c.execute(table)
 
             # Save (commit) the changes
+            conn.commit()
             
             return True
         except Error as e:
