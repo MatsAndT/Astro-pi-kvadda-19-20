@@ -17,6 +17,7 @@ class DataManager():
         """
         conn = None
         try:
+            # Connecting to db
             conn = sqlite3.connect(self.db_name)
         except Error as e:
             print(e)
@@ -39,8 +40,14 @@ class DataManager():
         );"""
 
         try:
+            # Getting cursor
             c = conn.cursor()
+
+            # Create table
             c.execute(table)
+
+            # Save (commit) the changes
+            
             return True
         except Error as e:
             print(e)
@@ -66,8 +73,14 @@ class DataManager():
                 VALUES(?,?,?) '''
         
         try:
+            # Getting cursor
             cur = conn.cursor()
+
+            # Insert a row of data
             cur.execute(sql, (datetime.now(), img, magnetometer))
+
+            # Save (commit) the changes
+
             return cur.lastrowid
         except Error as e:
             print(e)
