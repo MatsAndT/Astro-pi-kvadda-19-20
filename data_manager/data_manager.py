@@ -73,3 +73,25 @@ class DataManager():
             print(e)
             return None
 
+    def close(self, conn):
+        """
+        Close the connection to the db
+        :param conn: Connection object
+        :return True
+
+        Just be sure any changes have been committed or they will be lost.
+
+        If connection is not close then False is returned
+        """
+
+        try:
+            # Save (commit) the changes
+            conn.commit()
+
+            # Close the connection
+            conn.close()
+            return True
+        except Error as e:
+            print(e)
+            return False
+
