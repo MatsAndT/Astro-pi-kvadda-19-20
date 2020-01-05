@@ -1,4 +1,5 @@
 from sense_hat import SenseHat
 
 class MagneticField():
-    pass
+    def __init__(self):
+        self.sense = SenseHat()
