@@ -54,7 +54,7 @@ class DataManager():
             return False
 
 
-    def insert_data(self, conn, img, magnetometer):
+    def insert_data(self, conn, img, magnetometer_z, magnetometer_y, magnetometer_x):
         """
         Inserting data into sensor_data tabel
         :param conn: Connection object
@@ -69,15 +69,15 @@ class DataManager():
         If Error is threw then Noen is returned 
         """
         
-        sql = ''' INSERT INTO sensor_data(time,img,magnetometer)
-                VALUES(?,?,?) '''
+        sql = ''' INSERT INTO sensor_data(time,img,magnetometer_z,magnetometer_y,magnetometer_x)
+                VALUES(?,?,?,?,?) '''
         
         try:
             # Getting cursor
             cur = conn.cursor()
 
             # Insert a row of data
-            cur.execute(sql, (datetime.now(), img, magnetometer))
+            cur.execute(sql, (datetime.now(), img, magnetometer_z, magnetometer_y, magnetometer_x))
 
             # Save (commit) the changes
             conn.commit()
