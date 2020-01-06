@@ -2,6 +2,7 @@ from sense_hat import SenseHat
 
 class MagneticField():
     def __init__(self):
+        # Init the SenseHat class
         self.sense = SenseHat()
 
     def getCompass(self):
