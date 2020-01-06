@@ -1,9 +1,9 @@
 from sense_hat import SenseHat
 
 class MagneticField():
-    def __init__(self):
+    def __init__(self, *, sensehat=None):
         # Init the SenseHat class
-        self.sense = SenseHat()
+        self.sense = SenseHat() if sensehat is None else sensehat
 
     def getCompass(self):
         # Getting the raw compass data
