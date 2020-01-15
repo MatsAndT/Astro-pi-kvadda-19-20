@@ -2,11 +2,12 @@ from picamera import PiCamera
 from time import sleep
 import cv2
 
-path = "./tmp/lastimage.jpg"
+class Camera(PiCamera):
+    def __init__(self, *args, **kwargs):
+        self.path = kwargs.pop("path", ""./tmp/lastimage.jpg"")
+        return super().__init__(*args, **kwargs)
+        sleep(2)
 
-camera = PiCamera()
-sleep(2)
-
-def capture_image():
-    camera.capture(path)
-    return cv2.imread(path)
+    def capture_image(self):
+        camera.capture(self.path)
+        return cv2.imread(self.path)
