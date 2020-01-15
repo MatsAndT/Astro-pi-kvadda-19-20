@@ -103,8 +103,12 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# vscode
-.vscode/
-
 # temporary files
 *tmp/
+
+# VS Code
+.vscode/
+
+# DB
+*.db
+*.sqlite
