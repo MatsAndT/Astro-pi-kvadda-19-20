@@ -5,7 +5,7 @@ class MagneticField():
         # Init the SenseHat class
         self.sense = SenseHat() if sensehat is None else sensehat
 
-    def getCompass(self):
+    def get_compass(self):
         # Getting the raw compass data
         compass = self.sense.get_compass_raw()
 
