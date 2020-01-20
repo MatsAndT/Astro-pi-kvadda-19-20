@@ -23,3 +23,10 @@ class Main():
             except e:
                 print(e)
     
+    def getImg(self)
+        for i in range(0,max_attamts):
+            try:
+                return img_raw = self.camera.capture_image()
+                break:
+            except e:
+                print(e)
