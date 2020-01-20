@@ -14,4 +14,12 @@ class Main():
 
         self.conn = data_manager.create_connection()
         self.data_manager.create_table(conn) # TODO: if fasle (error) return
-        
+
+    def getCompass(self):
+        for i in range(0,max_attamts):
+            try:
+                return magnetic_field_raw = self.magnetic_field.get_compass()
+                break:
+            except e:
+                print(e)
+    
