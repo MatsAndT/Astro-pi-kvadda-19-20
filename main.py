@@ -29,6 +29,10 @@ class Main():
                 break:
             except e:
                 print(e)
+
+    def imgScore(self,img):
+        # TODO
+        pass
     
     def saveToDB(self,conn,magnetic_field_raw,img_raw):
         for i in range(0,max_attempts):
