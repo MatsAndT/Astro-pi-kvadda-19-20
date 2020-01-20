@@ -30,9 +30,9 @@ class Main():
         # TODO
         pass
     
-    def saveToDB(self,conn,img_raw,img_score,magnetic_field_raw):
+    def saveToDB(self,img_raw,img_score,magnetic_field_raw):
         for i in range(0,max_attempts):
             try:
-                self.data_manager.insert_data(conn,img_raw,img_score,magnetic_field_raw[0],magnetic_field_raw[1],magnetic_field_raw[2])
+                self.data_manager.insert_data(self.conn,img_raw,img_score,magnetic_field_raw[0],magnetic_field_raw[1],magnetic_field_raw[2])
                 break
             except Exception as e: print(e)
