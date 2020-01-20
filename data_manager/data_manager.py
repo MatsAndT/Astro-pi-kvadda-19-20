@@ -35,9 +35,10 @@ class DataManager():
             id integer PRIMARY KEY,
             time timestamp NOT NULL,
             img blob,
-            magnetometer_z real NOT NULL,
-            magnetometer_y real NOT NULL,
-            magnetometer_x real NOT NULL
+            img_score INTEGER,
+            magnetometer_z real,
+            magnetometer_y real,
+            magnetometer_x real
         );"""
 
         try:
@@ -56,7 +57,7 @@ class DataManager():
             return False
 
 
-    def insert_data(self, conn, img, magnetometer_z, magnetometer_y, magnetometer_x):
+    def insert_data(self, conn, img, img_score, magnetometer_z, magnetometer_y, magnetometer_x):
         """
         Inserting data into sensor_data tabel
         :param conn: Connection object
@@ -66,12 +67,13 @@ class DataManager():
         Id is auto set : last++
         Time is a timestamp : saved as timestamp
         Img is stored as a blob
+        img_score i stored as a int
         Magnetometrer x y z raw data in uT micro teslas : saved as real)
 
         If Error is threw then Noen is returned 
         """
         
-        sql = ''' INSERT INTO sensor_data(time,img,magnetometer_z,magnetometer_y,magnetometer_x)
+        sql = ''' INSERT INTO sensor_data(time,img,img_score,magnetometer_z,magnetometer_y,magnetometer_x)
                 VALUES(?,?,?,?,?) '''
         
         try:
@@ -79,7 +81,7 @@ class DataManager():
             cur = conn.cursor()
 
             # Insert a row of data
-            cur.execute(sql, (datetime.now(), img, magnetometer_z, magnetometer_y, magnetometer_x))
+            cur.execute(sql, (datetime.now(), img, img_score, magnetometer_z, magnetometer_y, magnetometer_x))
 
             # Save (commit) the changes
             conn.commit()
