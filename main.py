@@ -1,6 +1,6 @@
 from data_manager.data_manager import DataManager
 from magnetometer.magnetometer import MagneticField
-from camera.camera import  Camera
+from camera.camera import Camera
 
 max_attempts = 3
 
@@ -11,24 +11,20 @@ class Main():
         self.magnetic_field = MagneticField()
         self.camera = Camera()
 
-        self.conn = data_manager.create_connection()
-        self.data_manager.create_table(conn) # TODO: if fasle (error) return
+        self.conn = self.data_manager.create_connection()
+        self.data_manager.create_table(self.conn) # TODO: if fasle (error) return
 
     def getCompass(self):
         for i in range(0,max_attempts):
             try:
-                return magnetic_field_raw = self.magnetic_field.get_compass()
-                break:
-            except e:
-                print(e)
+                return self.magnetic_field.get_compass()
+            except Exception as e: print(e)
     
-    def getImg(self)
+    def getImg(self):
         for i in range(0,max_attempts):
             try:
-                return img_raw = self.camera.capture_image()
-                break:
-            except e:
-                print(e)
+                return self.camera.capture_image()
+            except Exception as e: print(e)
 
     def imgScore(self,img):
         # TODO
@@ -37,7 +33,6 @@ class Main():
     def saveToDB(self,conn,img_raw,img_score,magnetic_field_raw):
         for i in range(0,max_attempts):
             try:
-                data_manager.insert_data(conn,img_raw,magnetic_field_raw[0],magnetic_field_raw[1],magnetic_field_raw[2])
-                break:
-            except e:
-                print(e)
+                self.data_manager.insert_data(conn,img_raw,img_score,magnetic_field_raw[0],magnetic_field_raw[1],magnetic_field_raw[2])
+                break
+            except Exception as e: print(e)
