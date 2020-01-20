@@ -35,9 +35,9 @@ class DataManager():
             id integer PRIMARY KEY,
             time timestamp NOT NULL,
             img blob,
-            magnetometer_z real NOT NULL,
-            magnetometer_y real NOT NULL,
-            magnetometer_x real NOT NULL
+            magnetometer_z real,
+            magnetometer_y real,
+            magnetometer_x real
         );"""
 
         try:
