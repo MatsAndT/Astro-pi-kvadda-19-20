@@ -4,7 +4,7 @@ from camera.camera import Camera
 
 max_attempts = 3
 
-class Main():
+class main():
     def __init__(self):
         super().__init__()
         self.data_manager = DataManager()
