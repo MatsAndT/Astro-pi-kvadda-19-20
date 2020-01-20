@@ -30,3 +30,11 @@ class Main():
                 break:
             except e:
                 print(e)
+    
+    def saveToDB(self,conn,magnetic_field_raw,img_raw):
+        for i in range(0,max_attamts):
+            try:
+                data_manager.insert_data(conn,img_raw,magnetic_field_raw[0],magnetic_field_raw[1],magnetic_field_raw[2])
+                break:
+            except e:
+                print(e)
