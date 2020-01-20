@@ -34,7 +34,7 @@ class Main():
         # TODO
         pass
     
-    def saveToDB(self,conn,magnetic_field_raw,img_raw):
+    def saveToDB(self,conn,img_raw,img_score,magnetic_field_raw):
         for i in range(0,max_attempts):
             try:
                 data_manager.insert_data(conn,img_raw,magnetic_field_raw[0],magnetic_field_raw[1],magnetic_field_raw[2])
