@@ -11,6 +11,7 @@ class main():
         self.magnetic_field = MagneticField()
         self.camera = Camera()
 
+        self.start_time = datetime.now()
         self.conn = self.data_manager.create_connection()
         self.data_manager.create_table(self.conn) # TODO: if fasle (error) return
 
