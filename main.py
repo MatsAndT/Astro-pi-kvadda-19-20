@@ -46,3 +46,5 @@ class main():
 
         if self.storageAvailable(): self.removeBadScore() else: pass
 
+    def storageAvailable(self):
+        pass
