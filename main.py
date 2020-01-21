@@ -36,3 +36,13 @@ class main():
                 self.data_manager.insert_data(self.conn,img_raw,img_score,magnetic_field_raw[0],magnetic_field_raw[1],magnetic_field_raw[2])
                 break
             except Exception as e: print(e)
+
+    def manager(self):
+        compass_list = self.getCompass()
+        img = self.getImg()
+        img_score = self.imgScore(img)
+
+        self.saveToDB(img,img_score,compass_list)
+
+        if self.storageAvailable(): self.removeBadScore() else: pass
+
