@@ -18,13 +18,15 @@ class main():
         for i in range(0,max_attempts):
             try:
                 return self.magnetic_field.get_compass()
-            except Exception as e: print(e)
+            except Exception as e: 
+                print(e)
     
     def getImg(self):
         for i in range(0,max_attempts):
             try:
                 return self.camera.capture_image()
-            except Exception as e: print(e)
+            except Exception as e: 
+                print(e)
 
     def imgScore(self,img):
         # TODO
@@ -35,7 +37,8 @@ class main():
             try:
                 self.data_manager.insert_data(self.conn,img_raw,img_score,magnetic_field_raw[0],magnetic_field_raw[1],magnetic_field_raw[2])
                 break
-            except Exception as e: print(e)
+            except Exception as e: 
+                print(e)
 
     def manager(self):
         compass_list = self.getCompass()
