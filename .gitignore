@@ -103,6 +103,9 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# some unknown program
+.history/
+
 # temporary files
 *tmp/
 
