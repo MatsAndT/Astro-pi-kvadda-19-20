@@ -20,6 +20,8 @@ class main():
                 return self.magnetic_field.get_compass()
             except Exception as e: 
                 print(e)
+            
+        return None
     
     def getImg(self):
         for i in range(0,max_attempts):
@@ -27,6 +29,8 @@ class main():
                 return self.camera.capture_image()
             except Exception as e: 
                 print(e)
+
+        return None
 
     def imgScore(self,img):
         # TODO
@@ -39,6 +43,8 @@ class main():
                 break
             except Exception as e: 
                 print(e)
+
+        return None
 
     def manager(self):
         compass_list = self.getCompass()
