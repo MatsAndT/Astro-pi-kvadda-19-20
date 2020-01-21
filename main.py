@@ -48,3 +48,6 @@ class main():
 
     def storageAvailable(self):
         pass
+
+    def removeBadScore(self):
+        pass
