@@ -62,3 +62,6 @@ class main():
 
     def removeBadScore(self):
         pass
+
+if __name__ == "__main__":
+    main()
