@@ -2,7 +2,7 @@ from data_manager.data_manager import DataManager
 from magnetometer.magnetometer import MagneticField
 from camera.camera import Camera
 from datetime import datetime
-import os
+import os, signal
 
 max_attempts = 3
 
