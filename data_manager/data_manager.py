@@ -92,6 +92,13 @@ class DataManager():
             return None
 
     def delete_row(self, conn, id):
+        """
+        Delete row with id
+        :param conn: Connection object
+        :param id: id of row
+        :return: Deleted id of row
+        """
+
         # Getting cursor
         cur = conn.cursor()
 
