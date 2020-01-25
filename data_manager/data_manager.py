@@ -91,6 +91,25 @@ class DataManager():
             print(e)
             return None
 
+    def remove_bad_score(self, conn):
+        """
+        Getting img with bad score and deletes it
+        :param conn: Connection object
+        :return: bad score row id
+        """
+
+        # Getting cursor
+        cur = conn.cursor()
+
+        # Selecting 10 worst score
+        cur.execute("SELECT id, img_score FROM sensor_data ORDER BY img_score ASC LIMIT 10")
+
+        # Getting 10 worst score
+        rows = cur.fetchall()
+    
+        print("Deletes img from: "+str(rows[0]["id"]))
+        return self.delete_row(conn, rows[0])
+
     def delete_row(self, conn, id):
         """
         Delete row with id
