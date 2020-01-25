@@ -36,7 +36,7 @@ class main():
 
     def imgScore(self,img):
         # TODO
-        pass
+        return 100
     
     def saveToDB(self,img_raw,img_score,magnetic_field_raw):
         for i in range(0,max_attempts):
