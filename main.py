@@ -7,8 +7,14 @@ import os
 max_attempts = 3
 
 class main():
+    stop = False
+
     def __init__(self):
         super().__init__()
+
+        signal.signal(signal.SIGSTOP, self.stopProsses())
+        signal.signal(signal.SIGTERM, self.stopProsses())
+
         self.data_manager = DataManager()
         self.magnetic_field = MagneticField()
         self.camera = Camera()
@@ -50,6 +56,8 @@ class main():
         return None
 
     def manager(self):
+        if self.stop: return
+
         compass_list = self.getCompass()
         img = self.getImg()
         img_score = self.imgScore(img)
@@ -71,6 +79,9 @@ class main():
 
     def removeBadScore(self):
         pass
+    
+    def stopProsses(self):
+        self.stop = True
 
 if __name__ == "__main__":
     main()
