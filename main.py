@@ -64,7 +64,7 @@ class main():
 
         self.saveToDB(img,img_score,compass_list)
 
-        if self.storageAvailable(): self.removeBadScore() else: pass
+        if self.storageAvailable() == False: self.removeBadScore()
 
     def storageAvailable(self):
         max_size = 2.9*10**9
