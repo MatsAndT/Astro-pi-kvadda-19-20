@@ -91,6 +91,15 @@ class DataManager():
             print(e)
             return None
 
+    def delete_row(self, conn, id):
+        # Getting cursor
+        cur = conn.cursor()
+
+        # Delets the row with id = id
+        cur.execute("DELETE FROM sensor_data WHERE id=?", (id))
+
+        return id
+
     def close(self, conn):
         """
         Close the connection to the db
