@@ -74,8 +74,8 @@ class main():
         except FileNotFoundError as e:
             print(e)
         else:
-            if b > max_size: return True 
-            else: return False
+            if b > max_size: return False 
+            else: return True
 
     def removeBadScore(self):
         pass
