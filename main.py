@@ -2,6 +2,7 @@ from data_manager.data_manager import DataManager
 from magnetometer.magnetometer import MagneticField
 from camera.camera import Camera
 from datetime import datetime
+import os
 
 max_attempts = 3
 
@@ -58,7 +59,15 @@ class main():
         if self.storageAvailable(): self.removeBadScore() else: pass
 
     def storageAvailable(self):
-        pass
+        max_size = 2.9*10**9
+
+        try:
+            b = os.path.getsize("./data_manager/astropi.sqlite")
+        except FileNotFoundError as e:
+            print(e)
+        else:
+            if b > max_size: return True 
+            else: return False
 
     def removeBadScore(self):
         pass
