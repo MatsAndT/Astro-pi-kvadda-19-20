@@ -95,9 +95,8 @@ class DataManager():
 
         # Getting 10 worst score
         rows = cur.fetchall()
-    
-        print("Deletes img from: "+str(rows[0]["id"]))
-        return self.delete_row(rows[0])
+
+        return rows[0]["id"]
 
     def delete_row(self, id):
         """
