@@ -3,6 +3,7 @@ import numpy
 
 class Image:
     _ndvi = None
+    _score = None
 
     def __init__(self, image):
 
@@ -32,3 +33,28 @@ class Image:
         
         self._ndvi = top / bottom
         return self._ndvi
+
+    @property
+    def score(self):
+        """
+        Calculates the score based on average NDVI value and average brightness.
+        :return: int score
+        """
+        if self._score is not None:
+            return self._score
+
+        # Get average brightness from grayscale of original
+        brightness = cv2.mean(cv2.cvtColor(self.original, cv2.COLOR_BGR2GRAY))[0]
+        ndvi_average = cv2.mean(self.ndvi)[0]
+
+        # TODO: log brightness and average ndvi for debug
+
+        score = round(brightness)
+
+        if -0.2 < ndvi_average  < 0: # Likely ocean
+            score = round(score / 2)
+
+        if 200 < brightness: # Clouds
+            score = round(score / 4)
+
+        return max(0, score)
