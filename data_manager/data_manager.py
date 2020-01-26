@@ -1,4 +1,4 @@
-import sqlite3
+import sqlite3, os
 from sqlite3 import Error
 from datetime import datetime
 
@@ -116,6 +116,22 @@ class DataManager():
         self.conn.commit()
 
         return id
+
+    def storage_available(self):
+        """
+        Se if the size of db is less then max_size
+        :return: False (less) or True (bigger)
+        """
+
+        max_size = 2.9*10**9
+
+        try:
+            b = os.path.getsize(self.db_name)
+        except FileNotFoundError as e:
+            print(e)
+        else:
+            if b > max_size: return False 
+            else: return True
 
     def close(self):
         """
