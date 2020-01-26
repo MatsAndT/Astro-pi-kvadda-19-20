@@ -110,6 +110,7 @@ class DataManager():
         cur = self.conn.cursor()
 
         # Delets the row with id = id
+        print("Deletes img from: "+str(id))
         cur.execute("DELETE FROM sensor_data WHERE id=?", (id))
 
         return id
