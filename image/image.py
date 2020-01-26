@@ -2,6 +2,8 @@ import cv2
 import numpy
 
 class Image:
+    _ndvi = None
+
     def __init__(self, image):
 
         # Check if image is numpy.ndarray
@@ -16,6 +18,10 @@ class Image:
         Calculates NDVI values for each pixel (NDVI = (NIR + B) / (NIR - B))
         :return: numpy.ndarray NDVI image
         """
+
+        if self._ndvi is not None:
+            return self._ndvi
+
         # Get each color of the image
         blue, _, near_ir = cv2.split(self.original) 
 
@@ -24,5 +30,5 @@ class Image:
 
         top = near_ir.astype(float) - blue.astype(float)
         
-        return top / bottom
-
+        self._ndvi = top / bottom
+        return self._ndvi
