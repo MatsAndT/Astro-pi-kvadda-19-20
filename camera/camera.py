@@ -10,5 +10,5 @@ class Camera(PiCamera):
         return s
 
     def capture_image(self):
-        camera.capture(self.path)
+        self.capture(self.path)
         return cv2.imread(self.path)
