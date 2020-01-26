@@ -1,31 +1,22 @@
-import sqlite3
+import sqlite3, os
 from sqlite3 import Error
 from datetime import datetime
 
 
 class DataManager():
     db_name = r"./astropi.sqlite"
-    conn = None # Is set to db after create_connection is run
 
-    def create_connection(self):
-        """ create a database connection to the SQLite database
-            specified by db_file
-        :param db_file: database file
-        :return: Connection object or None
+    def __init__(self):
+        super().__init__()
 
-        If link was not made then None is returned
-        """
         try:
             # Connecting to db
-            conn = sqlite3.connect(self.db_name)
+            self.conn = sqlite3.connect(self.db_name)
         except Error as e:
             print(e)
     
-        return conn
-    
-    def create_table(self, conn):
+    def create_table(self):
         """ create a table from the table varibal
-        :param conn: Connection object
         :return: True
 
         If the table is stored correctly then a True is retuned, if not a False is retuned
@@ -35,20 +26,21 @@ class DataManager():
             id integer PRIMARY KEY,
             time timestamp NOT NULL,
             img blob,
-            magnetometer_z real NOT NULL,
-            magnetometer_y real NOT NULL,
-            magnetometer_x real NOT NULL
+            img_score INTEGER,
+            magnetometer_z real,
+            magnetometer_y real,
+            magnetometer_x real
         );"""
 
         try:
             # Getting cursor
-            c = conn.cursor()
+            c = self.conn.cursor()
 
             # Create table
             c.execute(table)
 
             # Save (commit) the changes
-            conn.commit()
+            self.conn.commit()
             
             return True
         except Error as e:
@@ -56,43 +48,94 @@ class DataManager():
             return False
 
 
-    def insert_data(self, conn, img, magnetometer_z, magnetometer_y, magnetometer_x):
+    def insert_data(self, img, img_score, magnetometer_z, magnetometer_y, magnetometer_x):
         """
         Inserting data into sensor_data tabel
-        :param conn: Connection object
         :param img: Image to be inserted
         :return: project id
 
         Id is auto set : last++
         Time is a timestamp : saved as timestamp
         Img is stored as a blob
+        img_score i stored as a int
         Magnetometrer x y z raw data in uT micro teslas : saved as real)
 
         If Error is threw then Noen is returned 
         """
         
-        sql = ''' INSERT INTO sensor_data(time,img,magnetometer_z,magnetometer_y,magnetometer_x)
+        sql = ''' INSERT INTO sensor_data(time,img,img_score,magnetometer_z,magnetometer_y,magnetometer_x)
                 VALUES(?,?,?,?,?) '''
         
         try:
             # Getting cursor
-            cur = conn.cursor()
+            cur = self.conn.cursor()
 
             # Insert a row of data
-            cur.execute(sql, (datetime.now(), img, magnetometer_z, magnetometer_y, magnetometer_x))
+            cur.execute(sql, (datetime.now(), img, img_score, magnetometer_z, magnetometer_y, magnetometer_x))
 
             # Save (commit) the changes
-            conn.commit()
+            self.conn.commit()
 
             return cur.lastrowid
         except Error as e:
             print(e)
             return None
 
-    def close(self, conn):
+    def get_bad_score(self):
+        """
+        Getting img with bad score
+        :return: bad score row id
+        """
+
+        # Getting cursor
+        cur = self.conn.cursor()
+
+        # Selecting 10 worst score
+        cur.execute("SELECT id, img_score FROM sensor_data ORDER BY img_score ASC LIMIT 10")
+
+        # Getting 10 worst score
+        rows = cur.fetchall()
+
+        return rows[0]["id"]
+
+    def delete_row(self, id):
+        """
+        Delete row with id
+        :param id: id of row
+        :return: Deleted id of row
+        """
+
+        # Getting cursor
+        cur = self.conn.cursor()
+
+        # Delets the row with id = id
+        print("Deletes img from: "+str(id))
+        cur.execute("DELETE FROM sensor_data WHERE id=?", (id))
+
+        # Save (commit) the changes
+        self.conn.commit()
+
+        return id
+
+    def storage_available(self):
+        """
+        Se if the size of db is less then max_size
+        :return: False (less) or True (bigger)
+        """
+
+        max_size = 2.9*10**9
+
+        try:
+            b = os.path.getsize(self.db_name)
+        except FileNotFoundError as e:
+            print(e)
+        else:
+            if b > max_size: return False 
+            else: return True
+
+    def close(self):
         """
         Close the connection to the db
-        :param conn: Connection object
         :return True
 
         Just be sure any changes have been committed or they will be lost.
@@ -102,10 +145,10 @@ class DataManager():
 
         try:
             # Save (commit) the changes
-            conn.commit()
+            self.conn.commit()
 
             # Close the connection
-            conn.close()
+            self.conn.close()
             return True
         except Error as e:
             print(e)
