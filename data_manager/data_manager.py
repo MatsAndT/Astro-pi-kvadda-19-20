@@ -5,7 +5,15 @@ from datetime import datetime
 
 class DataManager():
     db_name = r"./astropi.sqlite"
-    conn = None # Is set to db after create_connection is run
+
+    def __init__(self):
+        super().__init__()
+
+        try:
+            # Connecting to db
+            self.conn = sqlite3.connect(self.db_name)
+        except Error as e:
+            print(e)
 
     def create_connection(self):
         """ create a database connection to the SQLite database
@@ -23,9 +31,8 @@ class DataManager():
     
         return conn
     
-    def create_table(self, conn):
+    def create_table(self):
         """ create a table from the table varibal
-        :param conn: Connection object
         :return: True
 
         If the table is stored correctly then a True is retuned, if not a False is retuned
@@ -43,13 +50,13 @@ class DataManager():
 
         try:
             # Getting cursor
-            c = conn.cursor()
+            c = self.conn.cursor()
 
             # Create table
             c.execute(table)
 
             # Save (commit) the changes
-            conn.commit()
+            self.conn.commit()
             
             return True
         except Error as e:
@@ -57,10 +64,9 @@ class DataManager():
             return False
 
 
-    def insert_data(self, conn, img, img_score, magnetometer_z, magnetometer_y, magnetometer_x):
+    def insert_data(self, img, img_score, magnetometer_z, magnetometer_y, magnetometer_x):
         """
         Inserting data into sensor_data tabel
-        :param conn: Connection object
         :param img: Image to be inserted
         :return: project id
 
@@ -78,23 +84,55 @@ class DataManager():
         
         try:
             # Getting cursor
-            cur = conn.cursor()
+            cur = self.conn.cursor()
 
             # Insert a row of data
             cur.execute(sql, (datetime.now(), img, img_score, magnetometer_z, magnetometer_y, magnetometer_x))
 
             # Save (commit) the changes
-            conn.commit()
+            self.conn.commit()
 
             return cur.lastrowid
         except Error as e:
             print(e)
             return None
 
-    def close(self, conn):
+    def remove_bad_score(self):
+        """
+        Getting img with bad score and deletes it
+        :return: bad score row id
+        """
+
+        # Getting cursor
+        cur = self.conn.cursor()
+
+        # Selecting 10 worst score
+        cur.execute("SELECT id, img_score FROM sensor_data ORDER BY img_score ASC LIMIT 10")
+
+        # Getting 10 worst score
+        rows = cur.fetchall()
+    
+        print("Deletes img from: "+str(rows[0]["id"]))
+        return self.delete_row(rows[0])
+
+    def delete_row(self, id):
+        """
+        Delete row with id
+        :param id: id of row
+        :return: Deleted id of row
+        """
+
+        # Getting cursor
+        cur = self.conn.cursor()
+
+        # Delets the row with id = id
+        cur.execute("DELETE FROM sensor_data WHERE id=?", (id))
+
+        return id
+
+    def close(self):
         """
         Close the connection to the db
-        :param conn: Connection object
         :return True
 
         Just be sure any changes have been committed or they will be lost.
@@ -104,10 +142,10 @@ class DataManager():
 
         try:
             # Save (commit) the changes
-            conn.commit()
+            self.conn.commit()
 
             # Close the connection
-            conn.close()
+            self.conn.close()
             return True
         except Error as e:
             print(e)
