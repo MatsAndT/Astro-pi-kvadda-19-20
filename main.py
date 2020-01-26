@@ -20,8 +20,7 @@ class main():
         self.camera = Camera()
 
         self.start_time = datetime.now()
-        self.conn = self.data_manager.create_connection()
-        self.data_manager.create_table(self.conn) # TODO: if fasle (error) return
+        self.data_manager.create_table() # TODO: if fasle (error) return
 
     def getCompass(self):
         for i in range(0,max_attempts):
@@ -48,7 +47,7 @@ class main():
     def saveToDB(self,img_raw,img_score,magnetic_field_raw):
         for i in range(0,max_attempts):
             try:
-                self.data_manager.insert_data(self.conn,img_raw,img_score,magnetic_field_raw[0],magnetic_field_raw[1],magnetic_field_raw[2])
+                self.data_manager.insert_data(img_raw,img_score,magnetic_field_raw[0],magnetic_field_raw[1],magnetic_field_raw[2])
                 break
             except Exception as e: 
                 print(e)
