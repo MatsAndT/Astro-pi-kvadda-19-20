@@ -63,18 +63,7 @@ class main():
 
         self.saveToDB(img,img_score,compass_list)
 
-        if self.storageAvailable() == False: self.removeBadScore()
-
-    def storageAvailable(self):
-        max_size = 2.9*10**9
-
-        try:
-            b = os.path.getsize("./data_manager/astropi.sqlite")
-        except FileNotFoundError as e:
-            print(e)
-        else:
-            if b > max_size: return False 
-            else: return True
+        if self.data_manager.storage_available() == False: self.removeBadScore()
 
     def removeBadScore(self):
         pass
