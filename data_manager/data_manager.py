@@ -14,22 +14,6 @@ class DataManager():
             self.conn = sqlite3.connect(self.db_name)
         except Error as e:
             print(e)
-
-    def create_connection(self):
-        """ create a database connection to the SQLite database
-            specified by db_file
-        :param db_file: database file
-        :return: Connection object or None
-
-        If link was not made then None is returned
-        """
-        try:
-            # Connecting to db
-            conn = sqlite3.connect(self.db_name)
-        except Error as e:
-            print(e)
-    
-        return conn
     
     def create_table(self):
         """ create a table from the table varibal
