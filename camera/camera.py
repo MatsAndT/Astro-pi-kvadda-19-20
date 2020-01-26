@@ -4,7 +4,7 @@ import cv2
 
 class Camera(PiCamera):
     def __init__(self, *args, **kwargs):
-        self.path = kwargs.pop("path", ""./tmp/lastimage.jpg"")
+        self.path = kwargs.pop("path", "./tmp/lastimage.jpg")
         return super().__init__(*args, **kwargs)
         sleep(2)
 
