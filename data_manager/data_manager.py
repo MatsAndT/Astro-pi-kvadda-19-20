@@ -15,7 +15,7 @@ class DataManager():
         except Error as e:
             print(e)
     
-    def create_table(self):
+    def createTable(self):
         """ create a table from the table varibal
         :return: True
 
@@ -48,7 +48,7 @@ class DataManager():
             return False
 
 
-    def insert_data(self, img, img_score, magnetometer_z, magnetometer_y, magnetometer_x):
+    def insertData(self, img, img_score, magnetometer_z, magnetometer_y, magnetometer_x):
         """
         Inserting data into sensor_data tabel
         :param img: Image to be inserted
@@ -81,7 +81,7 @@ class DataManager():
             print(e)
             return None
 
-    def get_bad_score(self):
+    def getBadScore(self):
         """
         Getting img with bad score
         :return: bad score row id
@@ -98,7 +98,7 @@ class DataManager():
 
         return rows[0]["id"]
 
-    def delete_row(self, id):
+    def deleteRow(self, id):
         """
         Delete row with id
         :param id: id of row
