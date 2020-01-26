@@ -113,6 +113,9 @@ class DataManager():
         print("Deletes img from: "+str(id))
         cur.execute("DELETE FROM sensor_data WHERE id=?", (id))
 
+        # Save (commit) the changes
+        self.conn.commit()
+
         return id
 
     def close(self):
