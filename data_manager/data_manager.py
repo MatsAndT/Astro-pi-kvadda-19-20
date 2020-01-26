@@ -81,9 +81,9 @@ class DataManager():
             print(e)
             return None
 
-    def remove_bad_score(self):
+    def get_bad_score(self):
         """
-        Getting img with bad score and deletes it
+        Getting img with bad score
         :return: bad score row id
         """
 
