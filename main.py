@@ -1,7 +1,7 @@
 from data_manager.data_manager import DataManager
 from magnetometer.magnetometer import MagneticField
 from camera.camera import Camera
-from datetime import datetime
+from datetime import datetime, timedelta
 import os, signal
 
 max_attempts = 3
@@ -20,6 +20,7 @@ class main():
         self.camera = Camera()
 
         self.start_time = datetime.now()
+        self.stop_time = datetime.now() + timedelta(hours=2, minutes=58)
         self.data_manager.create_table() # TODO: if fasle (error) return
 
     def getCompass(self):
