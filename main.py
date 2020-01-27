@@ -57,6 +57,7 @@ class main():
 
     def manager(self):
         if self.stop: return
+        if self.stop_time =< datetime.now(): return
 
         compass_list = self.getCompass()
         img = self.getImg()
