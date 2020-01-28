@@ -1,6 +1,7 @@
 from data_manager.data_manager import DataManager
 from magnetometer.magnetometer import MagneticField
 from camera.camera import Camera
+from image.image import Image
 from datetime import datetime, timedelta
 import os, signal
 
@@ -41,10 +42,6 @@ class main():
 
         return None
     
-    def imgScore(self,img):
-        # TODO
-        return 100
-    
     def saveToDB(self,img_raw,img_score,magnetic_field_raw):
         for i in range(0,max_attempts):
             try:
@@ -61,9 +58,9 @@ class main():
 
         compass_list = self.getCompass()
         img = self.getImg()
-        img_score = self.imgScore(img)
+        img_pros = Image(img)
 
-        self.saveToDB(img,img_score,compass_list)
+        self.saveToDB(img,img_pros.score,compass_list)
 
         if self.data_manager.storage_available() == False: self.removeBadScore()
 
