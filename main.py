@@ -40,7 +40,7 @@ class main():
                 print(e)
 
         return None
-
+    
     def imgScore(self,img):
         # TODO
         return 100
