@@ -67,6 +67,8 @@ class main():
 
         if self.data_manager.storage_available() == False: self.removeBadScore()
 
+        self.manager()
+
     def removeBadScore(self):
         pass
     
