@@ -95,4 +95,4 @@ class Image:
     @classmethod
     def capture_image(cls):
         picam.capture("{}{}.jpg".format(path, id + 1))
-        return Image(cv2.imread(path))
+        return cls(cv2.imread(path))
