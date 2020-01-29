@@ -6,7 +6,7 @@ import numpy
 from picamera import PiCamera
 
 picam = PiCamera()
-path = "./tmp/"
+path = "./data/"
 sleep(2) # Pause to give the camera time to adjust
 
 id = 0
