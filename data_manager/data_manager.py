@@ -25,6 +25,7 @@ class DataManager():
         table = """CREATE TABLE IF NOT EXISTS sensor_data (
             id integer PRIMARY KEY,
             time timestamp NOT NULL,
+            img_name TEXT,
             img_score INTEGER,
             magnetometer_z REAL,
             magnetometer_y REAL,
@@ -47,7 +48,7 @@ class DataManager():
             return False
 
 
-    def insert_data(self, img_score, magnetometer_z, magnetometer_y, magnetometer_x):
+    def insert_data(self, img_name, img_score, magnetometer_z, magnetometer_y, magnetometer_x):
         """
         Inserting data into sensor_data tabel
         :param img_score: Score of image
@@ -69,7 +70,7 @@ class DataManager():
             cur = self.conn.cursor()
 
             # Insert a row of data
-            cur.execute(sql, (datetime.now(), img_score, magnetometer_z, magnetometer_y, magnetometer_x))
+            cur.execute(sql, (datetime.now(), img_name, img_score, magnetometer_z, magnetometer_y, magnetometer_x))
 
             # Save (commit) the changes
             self.conn.commit()
@@ -89,7 +90,7 @@ class DataManager():
         cur = self.conn.cursor()
 
         # Selecting 10 worst score
-        cur.execute("SELECT id, img_score FROM sensor_data ORDER BY img_score ASC LIMIT 10")
+        cur.execute("SELECT id, img_name, img_score FROM sensor_data ORDER BY img_score ASC LIMIT 10")
 
         # Getting 10 worst score
         rows = cur.fetchall()
