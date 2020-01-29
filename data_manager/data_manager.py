@@ -26,9 +26,9 @@ class DataManager():
             id integer PRIMARY KEY,
             time timestamp NOT NULL,
             img_score INTEGER,
-            magnetometer_z real,
-            magnetometer_y real,
-            magnetometer_x real
+            magnetometer_z REAL,
+            magnetometer_y REAL,
+            magnetometer_x REAL
         );"""
 
         try:
