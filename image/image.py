@@ -6,6 +6,7 @@ import numpy
 from picamera import PiCamera
 
 picam = PiCamera()
+picam.resolution = (2592, 1944)
 path = "./data/"
 sleep(2) # Pause to give the camera time to adjust
 
