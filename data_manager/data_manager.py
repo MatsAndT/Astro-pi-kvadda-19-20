@@ -3,11 +3,12 @@ from sqlite3 import Error
 from datetime import datetime
 
 
-class DataManager():
+class DataManager(object):
     db_name = r"./astropi.sqlite"
 
-    def __init__(self):
+    def __init__(self, img_path):
         super().__init__()
+        self.img_path = img_path
 
         try:
             # Connecting to db
