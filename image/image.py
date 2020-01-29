@@ -1,17 +1,34 @@
+from time import sleep
+
+import os
 import cv2
 import numpy
+from picamera import PiCamera
+
+picam = PiCamera()
+path = "./tmp/"
+sleep(2) # Pause to give the camera time to adjust
+
+id = 0
 
 class Image:
     _ndvi = None
     _score = None
+    _id = None
 
-    def __init__(self, image):
+    def __init__(self, image, id_=None):
 
         # Check if image is numpy.ndarray
         if not isinstance(image, numpy.ndarray):
             raise TypeError('Expected image, not {}'.format(type(image)))
 
         self.original = image
+        global id
+        if id is None:
+            self.id = id
+            id += 1
+        else:
+            self.id = id_
 
     @property
     def ndvi(self):
@@ -58,3 +75,24 @@ class Image:
             score = round(score / 4)
 
         return max(0, score)
+
+    @property
+    def id(self):
+        return self._id
+
+    @id.setter
+    def id_setter(self, value):
+        if self._id is None:
+            self._id = value
+            return
+
+        raise AttributeError("ID can only be set once")
+
+    @property
+    def path(self):
+        return os.path.abspath("{}{}.jpg".format(path, self.id))
+
+    @classmethod
+    def capture_image(cls):
+        picam.capture("{}{}.jpg".format(path, id + 1))
+        return Image(cv2.imread(path))
