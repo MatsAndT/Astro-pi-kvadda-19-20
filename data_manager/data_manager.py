@@ -6,8 +6,9 @@ from datetime import datetime
 class DataManager(object):
     db_name = r"./astropi.sqlite"
 
-    def __init__(self, img_path):
+    def __init__(self, db_path, img_path):
         super().__init__()
+        self.db_name = db_path
         self.img_path = img_path
 
         try:
