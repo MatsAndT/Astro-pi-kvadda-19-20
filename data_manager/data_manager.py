@@ -98,9 +98,9 @@ class DataManager(object):
 
         return rows[0]
 
-    def delete_row(self, id, img_name):
+    def delete_img(self, id, img_name):
         """
-        Delete row with id
+        Delete img with img_name
         :param id: id of row
         :param img_name: Name of the img
         :return: Deleted id of row
@@ -110,8 +110,10 @@ class DataManager(object):
         cur = self.conn.cursor()
 
         # Delets the row with id = id
-        print("Deletes img from: "+str(id))
-        cur.execute("DELETE FROM sensor_data WHERE id=?", (id))
+        print("Deletes img from: "+str(id)+", img_name: "+str(img_name))
+        ##cur.execute("DELETE FROM sensor_data WHERE id=?", (id))
+        os.remove(self.img_path+"/"+img_name)
+        print("File removed")
 
         # Save (commit) the changes
         self.conn.commit()
