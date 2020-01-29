@@ -83,7 +83,7 @@ class DataManager():
     def get_bad_score(self):
         """
         Getting img with bad score
-        :return: bad score row id
+        :return: bad score row
         """
 
         # Getting cursor
@@ -95,7 +95,7 @@ class DataManager():
         # Getting 10 worst score
         rows = cur.fetchall()
 
-        return rows[0]["id"]
+        return rows[0]
 
     def delete_row(self, id):
         """
