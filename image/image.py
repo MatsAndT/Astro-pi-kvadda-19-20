@@ -78,6 +78,7 @@ class Image:
 
     @property
     def id(self):
+        # ID is read only, unless it havent been set
         return self._id
 
     @id.setter
