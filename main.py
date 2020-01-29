@@ -6,6 +6,8 @@ from datetime import datetime, timedelta
 import os, signal
 
 max_attempts = 3
+img_path = "./data/imgs/"
+db_path = r"./data/database.sqlite"
 
 class main():
     stop = False
@@ -16,7 +18,7 @@ class main():
         signal.signal(signal.SIGSTOP, self.stopProsses())
         signal.signal(signal.SIGTERM, self.stopProsses())
 
-        self.data_manager = DataManager()
+        self.data_manager = DataManager(db_path, img_path)
         self.magnetic_field = MagneticField()
         self.camera = Camera()
 
