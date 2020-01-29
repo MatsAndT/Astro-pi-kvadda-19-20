@@ -25,7 +25,6 @@ class DataManager():
         table = """CREATE TABLE IF NOT EXISTS sensor_data (
             id integer PRIMARY KEY,
             time timestamp NOT NULL,
-            img blob,
             img_score INTEGER,
             magnetometer_z real,
             magnetometer_y real,
@@ -48,22 +47,21 @@ class DataManager():
             return False
 
 
-    def insert_data(self, img, img_score, magnetometer_z, magnetometer_y, magnetometer_x):
+    def insert_data(self, img_score, magnetometer_z, magnetometer_y, magnetometer_x):
         """
         Inserting data into sensor_data tabel
-        :param img: Image to be inserted
+        :param img_score: Score of image
         :return: project id
 
         Id is auto set : last++
         Time is a timestamp : saved as timestamp
-        Img is stored as a blob
         img_score i stored as a int
         Magnetometrer x y z raw data in uT micro teslas : saved as real)
 
         If Error is threw then Noen is returned 
         """
         
-        sql = ''' INSERT INTO sensor_data(time,img,img_score,magnetometer_z,magnetometer_y,magnetometer_x)
+        sql = ''' INSERT INTO sensor_data(time,img_score,magnetometer_z,magnetometer_y,magnetometer_x)
                 VALUES(?,?,?,?,?) '''
         
         try:
@@ -71,7 +69,7 @@ class DataManager():
             cur = self.conn.cursor()
 
             # Insert a row of data
-            cur.execute(sql, (datetime.now(), img, img_score, magnetometer_z, magnetometer_y, magnetometer_x))
+            cur.execute(sql, (datetime.now(), img_score, magnetometer_z, magnetometer_y, magnetometer_x))
 
             # Save (commit) the changes
             self.conn.commit()
