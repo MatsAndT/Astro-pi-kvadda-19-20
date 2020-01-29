@@ -97,10 +97,11 @@ class DataManager():
 
         return rows[0]
 
-    def delete_row(self, id):
+    def delete_row(self, id, img_name):
         """
         Delete row with id
         :param id: id of row
+        :param img_name: Name of the img
         :return: Deleted id of row
         """
 
