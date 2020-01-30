@@ -1,13 +1,14 @@
 from data_manager.data_manager import DataManager
 from magnetometer.magnetometer import MagneticField
-from camera.camera import Camera
-from image.image import Image
+from image import image
 from datetime import datetime, timedelta
 import os, signal
 
 max_attempts = 3
 img_path = "./data/imgs/"
 db_path = r"./data/database.sqlite"
+
+image.path = img_path
 
 class main():
     stop = False
