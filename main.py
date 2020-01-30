@@ -57,7 +57,7 @@ class main():
         return None
 
     def manager(self):
-        if self.stop or self.stop_time =< datetime.now():
+        if self.stop or self.stop_time <= datetime.now():
             self.data_manager.close()
             return
         
