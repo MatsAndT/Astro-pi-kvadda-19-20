@@ -56,6 +56,13 @@ class main():
 
         return None
 
+    def remove_bad_score_img(self):
+        row = self.data_manager.get_bad_score()
+        id = self.data_manager.delete_img(row["id"], row["img_name"])
+    
+    def stop_prosses(self):
+        self.stop = True
+
     def manager(self):
         if self.stop or self.stop_time <= datetime.now():
             self.data_manager.close()
@@ -70,13 +77,6 @@ class main():
         if self.data_manager.storage_available() == False: self.remove_bad_score_img()
 
         self.manager()
-
-    def remove_bad_score_img(self):
-        row = self.data_manager.get_bad_score()
-        id = self.data_manager.delete_img(row["id"], row["img_name"])
-    
-    def stop_prosses(self):
-        self.stop = True
 
 if __name__ == "__main__":
     main()
