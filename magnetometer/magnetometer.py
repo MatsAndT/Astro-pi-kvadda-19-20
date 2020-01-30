@@ -5,9 +5,10 @@ class MagneticField():
         # Init the SenseHat class
         self.sense = SenseHat() if sensehat is None else sensehat
 
-    def getCompass(self):
-        # Getting the raw compass data
-        compass = self.sense.get_compass_raw()
+    @property
+    def magnetometer_z(self):
+        # Return the comass rew compass data from z in uT (micro teslas)
+        return self.compass['z']
 
         # Return the comass rew compass data from z, y and x in uT (micro teslas)
         return [compass['z'], compass['y'], compass['x']]
