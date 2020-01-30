@@ -22,8 +22,8 @@ class main():
         self.data_manager = DataManager(db_path, img_path)
         self.sense = SenseHat()
 
-        self.start_time = datetime.now()
-        self.stop_time = datetime.now() + timedelta(hours=2, minutes=58)
+        self.start_time = datetime.utcnow()
+        self.stop_time = datetime.utcnow() + timedelta(hours=2, minutes=58)
         self.data_manager.create_table() # TODO: if fasle (error) return
 
     def get_compass(self):
@@ -64,7 +64,7 @@ class main():
         self.stop = True
 
     def manager(self):
-        if self.stop or self.stop_time <= datetime.now():
+        if self.stop or self.stop_time <= datetime.utcnow():
             self.data_manager.close()
             return
         
