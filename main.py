@@ -16,8 +16,8 @@ class main():
     def __init__(self):
         super().__init__()
 
-        signal.signal(signal.SIGSTOP, self.stopProsses())
-        signal.signal(signal.SIGTERM, self.stopProsses())
+        signal.signal(signal.SIGSTOP, self.stop_prosses())
+        signal.signal(signal.SIGTERM, self.stop_prosses())
 
         self.data_manager = DataManager(db_path, img_path)
         self.sense = SenseHat()
@@ -26,7 +26,7 @@ class main():
         self.stop_time = datetime.now() + timedelta(hours=2, minutes=58)
         self.data_manager.create_table() # TODO: if fasle (error) return
 
-    def getCompass(self):
+    def get_compass(self):
         for i in range(0,max_attempts):
             try:
                 # Get axes with z ["z"], y ["y"], x ["x"]
@@ -36,7 +36,7 @@ class main():
             
         return None
     
-    def getImg(self):
+    def get_img(self):
         for i in range(0,max_attempts):
             try:
                 img = Image.capture_image()
@@ -46,7 +46,7 @@ class main():
 
         return None
     
-    def saveToDB(self,img_raw,img_score,magnetic_field_raw):
+    def save_to_db(self,img_raw,img_score,magnetic_field_raw):
         for i in range(0,max_attempts):
             try:
                 self.data_manager.insert_data(img_raw,img_score,magnetic_field_raw[0],magnetic_field_raw[1],magnetic_field_raw[2])
@@ -62,20 +62,20 @@ class main():
             return
         
 
-        compass_list = self.getCompass()
-        img = self.getImg()
+        compass_list = self.get_compass()
+        img = self.get_img()
 
-        self.saveToDB(img.id,img.score,compass_list)
+        self.save_to_db(img.id,img.score,compass_list)
 
-        if self.data_manager.storage_available() == False: self.removeBadScoreImg()
+        if self.data_manager.storage_available() == False: self.remove_bad_score_img()
 
         self.manager()
 
-    def removeBadScoreImg(self):
+    def remove_bad_score_img(self):
         row = self.data_manager.get_bad_score()
         id = self.data_manager.delete_img(row["id"], row["img_name"])
     
-    def stopProsses(self):
+    def stop_prosses(self):
         self.stop = True
 
 if __name__ == "__main__":
