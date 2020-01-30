@@ -130,7 +130,7 @@ class DataManager(object):
         max_size = 2.9*10**9
 
         try:
-            b = os.path.getsize(self.db_name)
+            b = os.path.getsize(self.img_path+"../")
         except FileNotFoundError as e:
             print(e)
         else:
