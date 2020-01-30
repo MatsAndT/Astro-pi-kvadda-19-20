@@ -3,7 +3,8 @@ from sense_hat import SenseHat
 class MagneticField():
     def __init__(self, *, sensehat=None):
         # Init the SenseHat class
-        self.sense = SenseHat() if sensehat is None else sensehat
+        sense = SenseHat()
+        self.compass = sense.get_compass_raw()
 
     @property
     def magnetometer_z(self):
