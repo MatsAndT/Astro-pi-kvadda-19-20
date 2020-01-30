@@ -21,7 +21,6 @@ class main():
 
         self.data_manager = DataManager(db_path, img_path)
         self.magnetic_field = MagneticField()
-        self.camera = Camera()
 
         self.start_time = datetime.now()
         self.stop_time = datetime.now() + timedelta(hours=2, minutes=58)
