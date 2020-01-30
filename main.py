@@ -29,7 +29,8 @@ class main():
     def getCompass(self):
         for i in range(0,max_attempts):
             try:
-                return self.magnetic_field.get_compass()
+                # Get axes with z ["z"], y ["y"], x ["x"]
+                return self.sense.get_compass_raw()
             except Exception as e: 
                 print(e)
             
