@@ -1,7 +1,7 @@
 from sense_hat import SenseHat
 
-class MagneticField():
-    def __init__(self, *, sensehat=None):
+class MagneticField(SenseHat):
+    def __init__(self, *args, **kwargs):
         # Init the SenseHat class
         sense = SenseHat()
         self.compass = sense.get_compass_raw()
