@@ -14,3 +14,8 @@ class MagneticField():
     def magnetometer_y(self):
         # Return the comass rew compass data from y in uT (micro teslas)
         return self.compass['y']
+
+    @property
+    def magnetometer_x(self):
+        # Return the comass rew compass data from x in uT (micro teslas)
+        return self.compass['x']
