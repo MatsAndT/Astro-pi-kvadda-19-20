@@ -91,10 +91,10 @@ class DataManager(object):
         # Getting cursor
         cur = self.conn.cursor()
 
-        # Selecting 10 worst score
-        cur.execute("SELECT id, img_name, img_score FROM sensor_data ORDER BY img_score ASC LIMIT 10")
+        # Selecting worst score
+        cur.execute("SELECT id, img_name, img_score FROM sensor_data ORDER BY img_score ASC LIMIT 1")
 
-        # Getting 10 worst score
+        # Getting worst score
         rows = cur.fetchall()
 
         return rows[0]
