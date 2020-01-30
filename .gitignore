@@ -112,3 +112,9 @@ venv.bak/
 # DB
 *.db
 *.sqlite
+
+# Images
+data/*
+
+# History
+.history

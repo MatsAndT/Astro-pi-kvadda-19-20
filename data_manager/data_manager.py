@@ -1,4 +1,4 @@
-import sqlite3
+import sqlite3, os
 from sqlite3 import Error
 from datetime import datetime
 
@@ -14,22 +14,6 @@ class DataManager():
             self.conn = sqlite3.connect(self.db_name)
         except Error as e:
             print(e)
-
-    def create_connection(self):
-        """ create a database connection to the SQLite database
-            specified by db_file
-        :param db_file: database file
-        :return: Connection object or None
-
-        If link was not made then None is returned
-        """
-        try:
-            # Connecting to db
-            conn = sqlite3.connect(self.db_name)
-        except Error as e:
-            print(e)
-    
-        return conn
     
     def create_table(self):
         """ create a table from the table varibal
@@ -97,9 +81,9 @@ class DataManager():
             print(e)
             return None
 
-    def remove_bad_score(self):
+    def get_bad_score(self):
         """
-        Getting img with bad score and deletes it
+        Getting img with bad score
         :return: bad score row id
         """
 
@@ -111,9 +95,8 @@ class DataManager():
 
         # Getting 10 worst score
         rows = cur.fetchall()
-    
-        print("Deletes img from: "+str(rows[0]["id"]))
-        return self.delete_row(rows[0])
+
+        return rows[0]["id"]
 
     def delete_row(self, id):
         """
@@ -126,9 +109,29 @@ class DataManager():
         cur = self.conn.cursor()
 
         # Delets the row with id = id
+        print("Deletes img from: "+str(id))
         cur.execute("DELETE FROM sensor_data WHERE id=?", (id))
 
+        # Save (commit) the changes
+        self.conn.commit()
+
         return id
+
+    def storage_available(self):
+        """
+        Se if the size of db is less then max_size
+        :return: False (less) or True (bigger)
+        """
+
+        max_size = 2.9*10**9
+
+        try:
+            b = os.path.getsize(self.db_name)
+        except FileNotFoundError as e:
+            print(e)
+        else:
+            if b > max_size: return False 
+            else: return True
 
     def close(self):
         """
