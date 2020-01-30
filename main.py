@@ -16,8 +16,8 @@ class main():
     def __init__(self):
         super().__init__()
 
-        signal.signal(signal.SIGSTOP, self.stop_prosses())
-        signal.signal(signal.SIGTERM, self.stop_prosses())
+        signal.signal(signal.SIGSTOP, self.stop_prosses)
+        signal.signal(signal.SIGTERM, self.stop_prosses)
 
         self.data_manager = DataManager(db_path, img_path)
         self.sense = SenseHat()
