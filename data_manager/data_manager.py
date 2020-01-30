@@ -50,7 +50,7 @@ class DataManager(object):
             return False
 
 
-    def insert_data(self, img_name, img_score, magnetometer_z, magnetometer_y, magnetometer_x):
+    def insert_data(self, img_name, img_score, magnetometer):
         """
         Inserting data into sensor_data tabel
         :param img_score: Score of image
@@ -72,7 +72,7 @@ class DataManager(object):
             cur = self.conn.cursor()
 
             # Insert a row of data
-            cur.execute(sql, (datetime.now(), img_name, img_score, magnetometer_z, magnetometer_y, magnetometer_x))
+            cur.execute(sql, (datetime.now(), img_name, img_score, magnetometer["z"],magnetometer["y"],magnetometer["x"]))
 
             # Save (commit) the changes
             self.conn.commit()
