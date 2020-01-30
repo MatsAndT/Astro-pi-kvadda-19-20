@@ -39,7 +39,8 @@ class main():
     def getImg(self):
         for i in range(0,max_attempts):
             try:
-                return self.camera.capture_image()
+                img = Image.capture_image()
+                return img
             except Exception as e: 
                 print(e)
 
@@ -61,9 +62,8 @@ class main():
 
         compass_list = self.getCompass()
         img = self.getImg()
-        img_pros = Image(img)
 
-        self.saveToDB(img,img_pros.score,compass_list)
+        self.saveToDB(img.id,img.score,compass_list)
 
         if self.data_manager.storage_available() == False: self.removeBadScoreImg()
 
