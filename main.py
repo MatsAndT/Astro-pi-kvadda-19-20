@@ -65,7 +65,7 @@ class main():
 
         self.saveToDB(img,img_pros.score,compass_list)
 
-        if self.data_manager.storage_available() == False: self.removeBadScore()
+        if self.data_manager.storage_available() == False: self.removeBadScoreImg()
 
         self.manager()
 
