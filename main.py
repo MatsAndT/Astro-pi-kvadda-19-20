@@ -69,8 +69,9 @@ class main():
 
         self.manager()
 
-    def removeBadScore(self):
-        pass
+    def removeBadScoreImg(self):
+        row = self.data_manager.get_bad_score()
+        id = self.data_manager.delete_img(row["id"], row["img_name"])
     
     def stopProsses(self):
         self.stop = True
