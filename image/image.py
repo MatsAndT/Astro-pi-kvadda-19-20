@@ -94,6 +94,10 @@ class Image:
     def path(self):
         return os.path.abspath("{}{}.jpg".format(path, self.id))
 
+    @property
+    def name(self):
+        return "{self.id}.jpg"
+
     @classmethod
     def capture_image(cls):
         picam.capture("{}{}.jpg".format(path, id + 1))
