@@ -1,5 +1,5 @@
 from data_manager.data_manager import DataManager
-from magnetometer.magnetometer import MagneticField
+from sense_hat import SenseHat
 from image import image
 from datetime import datetime, timedelta
 import os, signal
@@ -20,7 +20,7 @@ class main():
         signal.signal(signal.SIGTERM, self.stopProsses())
 
         self.data_manager = DataManager(db_path, img_path)
-        self.magnetic_field = MagneticField()
+        self.sense = SenseHat()
 
         self.start_time = datetime.now()
         self.stop_time = datetime.now() + timedelta(hours=2, minutes=58)
