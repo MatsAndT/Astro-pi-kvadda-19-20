@@ -57,8 +57,16 @@ class main():
         return None
 
     def remove_bad_score_img(self):
-        row = self.data_manager.get_bad_score()
-        id = self.data_manager.delete_img(row["id"], row["img_name"])
+        for i in range(0,max_attempts):
+            try:
+                bad_row = self.data_manager.get_bad_score()
+                self.data_manager.delete_img(bad_row["img_name"])
+                self.data_manager.delete_row(bad_row["id"])
+
+            except Exception as e: 
+                print(e)
+
+        return None        
     
     def stop_prosses(self):
         self.stop = True
