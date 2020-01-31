@@ -1,8 +1,21 @@
 import sqlite3
 import os
+import logging
 from sqlite3 import Error
 from datetime import datetime
 
+# if the logging is imported the root will be file name
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+# How the logs are going to look
+formatter = logging.Formatter('%(levelname)s:%(asctime)s:%(name)s:%(message)s')
+
+# Where the log file will be saved
+file_handler = logging.FileHandler('./data/log.log')
+file_handler.setFormatter(formatter) 
+
+logger.addHandler(file_handler)
 
 class DataManager(object):
     def __init__(self, db_path, img_path):
@@ -14,6 +27,7 @@ class DataManager(object):
             self.conn = sqlite3.connect(self.db_name)
         except Error as e:
             print(e)
+            logger.critical('Cannot connect to db')
 
     def create_table(self):
         """ create a table from the table varibal
