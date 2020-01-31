@@ -1,4 +1,5 @@
-import sqlite3, os
+import sqlite3
+import os
 from sqlite3 import Error
 from datetime import datetime
 
@@ -13,14 +14,14 @@ class DataManager(object):
             self.conn = sqlite3.connect(self.db_name)
         except Error as e:
             print(e)
-    
+
     def create_table(self):
         """ create a table from the table varibal
         :return: True
 
         If the table is stored correctly then a True is retuned, if not a False is retuned
         """
-        
+
         table = """CREATE TABLE IF NOT EXISTS sensor_data (
             id integer PRIMARY KEY,
             time timestamp NOT NULL,
@@ -32,20 +33,17 @@ class DataManager(object):
         );"""
 
         try:
-            # Getting cursor
             c = self.conn.cursor()
 
             # Create table
             c.execute(table)
 
-            # Save (commit) the changes
             self.conn.commit()
-            
+
             return True
         except Error as e:
             print(e)
             return False
-
 
     def insert_data(self, img_name, img_score, magnetometer):
         """
@@ -62,18 +60,17 @@ class DataManager(object):
 
         If Error is threw then Noen is returned 
         """
-        
+
         sql = ''' INSERT INTO sensor_data(time,img_score,magnetometer_z,magnetometer_y,magnetometer_x)
                 VALUES(?,?,?,?,?) '''
-        
+
         try:
-            # Getting cursor
             cur = self.conn.cursor()
 
             # Insert a row of data
-            cur.execute(sql, (datetime.now(), img_name, img_score, magnetometer["z"], magnetometer["y"], magnetometer["x"]))
+            cur.execute(sql, (datetime.now(), img_name, img_score,
+                              magnetometer["z"], magnetometer["y"], magnetometer["x"]))
 
-            # Save (commit) the changes
             self.conn.commit()
 
             return cur.lastrowid
@@ -87,11 +84,11 @@ class DataManager(object):
         :return: bad score row
         """
 
-        # Getting cursor
         cur = self.conn.cursor()
 
         # Selecting worst score
-        cur.execute("SELECT id, img_name, img_score FROM sensor_data ORDER BY img_score ASC LIMIT 1")
+        cur.execute(
+            "SELECT id, img_name, img_score FROM sensor_data ORDER BY img_score ASC LIMIT 1")
 
         # Getting worst score
         rows = cur.fetchall()
@@ -135,8 +132,10 @@ class DataManager(object):
         except FileNotFoundError as e:
             print(e)
         else:
-            if b > max_size: return False 
-            else: return True
+            if b > max_size:
+                return False
+            else:
+                return True
 
     def close(self):
         """
@@ -149,7 +148,6 @@ class DataManager(object):
         """
 
         try:
-            # Save (commit) the changes
             self.conn.commit()
 
             # Close the connection
