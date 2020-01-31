@@ -4,14 +4,12 @@ from datetime import datetime
 
 
 class DataManager(object):
-
     def __init__(self, db_path, img_path):
         super().__init__()
         self.db_name = db_path
         self.img_path = img_path
 
         try:
-            # Connecting to db
             self.conn = sqlite3.connect(self.db_name)
         except Error as e:
             print(e)
@@ -52,7 +50,9 @@ class DataManager(object):
     def insert_data(self, img_name, img_score, magnetometer):
         """
         Inserting data into sensor_data tabel
+        :param img_name: Name of image
         :param img_score: Score of image
+        :param magnetometer: Magnetometer data, z, y and x
         :return: project id
 
         Id is auto set : last++
@@ -71,7 +71,7 @@ class DataManager(object):
             cur = self.conn.cursor()
 
             # Insert a row of data
-            cur.execute(sql, (datetime.now(), img_name, img_score, magnetometer["z"],magnetometer["y"],magnetometer["x"]))
+            cur.execute(sql, (datetime.now(), img_name, img_score, magnetometer["z"], magnetometer["y"], magnetometer["x"]))
 
             # Save (commit) the changes
             self.conn.commit()
