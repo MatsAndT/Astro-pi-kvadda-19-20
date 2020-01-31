@@ -1,6 +1,6 @@
-import sqlite3
-import os
 import logging
+import os
+import sqlite3
 from sqlite3 import Error
 from datetime import datetime
 
@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 # How the logs are going to look
-formatter = logging.Formatter('%(levelname)s:%(asctime)s:%(name)s:%(message)s')
+formatter = logging.Formatter('%(levelname)s:%(asctime)s:%(name)s:%(funcName)s:%(message)s')
 
 # Where the log file will be saved
 file_handler = logging.FileHandler('./data/log.log')
@@ -22,7 +22,6 @@ class DataManager(object):
         super().__init__()
         self.db_name = db_path
         self.img_path = img_path
-
         try:
             self.conn = sqlite3.connect(self.db_name)
         except Error as e:
