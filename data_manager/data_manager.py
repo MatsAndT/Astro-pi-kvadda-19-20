@@ -98,20 +98,13 @@ class DataManager(object):
 
         return rows[0]
 
-    def delete_img(self, id, img_name):
+    def delete_img(self, img_name):
         """
         Delete img with img_name
-        :param id: id of row
         :param img_name: Name of the img
-        :return: Deleted id of row
         """
 
-        # Getting cursor
-        cur = self.conn.cursor()
-
-        # Delets the row with id = id
         print("Deletes img from: "+str(id)+", img_name: "+str(img_name))
-        ##cur.execute("DELETE FROM sensor_data WHERE id=?", (id))
         os.remove(self.img_path+"/"+img_name)
         print("File removed")
 
@@ -128,8 +121,6 @@ class DataManager(object):
         print("Row removed")
 
         self.conn.commit()
-
-        return id
 
     def storage_available(self):
         """
