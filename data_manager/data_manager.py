@@ -115,7 +115,18 @@ class DataManager(object):
         os.remove(self.img_path+"/"+img_name)
         print("File removed")
 
-        # Save (commit) the changes
+    def delete_row(self, id):
+        """
+        Delete row with id
+        :param id: id of row
+        """
+
+        cur = self.conn.cursor()
+
+        print("Deletres row with id: "+str(id))
+        cur.execute("DELETE FROM sensor_data WHERE id=?", (id))
+        print("Row removed")
+
         self.conn.commit()
 
         return id
