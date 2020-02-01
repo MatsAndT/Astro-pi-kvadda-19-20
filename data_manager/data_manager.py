@@ -3,6 +3,7 @@ import os
 import sqlite3
 from sqlite3 import Error
 from datetime import datetime
+from logging import handlers
 
 # if the logging is imported the root will be file name
 logger = logging.getLogger(__name__)
@@ -11,11 +12,17 @@ logger.setLevel(logging.DEBUG)
 # How the logs are going to look
 formatter = logging.Formatter('%(levelname)s:%(asctime)s:%(name)s:%(funcName)s:%(message)s')
 
-# Where the log file will be saved
-file_handler = logging.FileHandler('./data/log.log')
-file_handler.setFormatter(formatter) 
+filename = "log.log"
 
-logger.addHandler(file_handler)
+# Creates a new log file every time it runs
+should_roll_over = os.path.isfile(filename)
+handler = logging.handlers.RotatingFileHandler(filename, mode='w', backupCount=5)
+if should_roll_over:  # log already exists, roll over!
+    handler.doRollover()
+handler.setFormatter(formatter) 
+handler.setLevel(logging.DEBUG)
+
+logger.addHandler(handler)
 
 class DataManager(object):
     def __init__(self, db_path, img_path):
