@@ -2,8 +2,10 @@ from data_manager.data_manager import DataManager
 from datetime import datetime, timedelta
 from sense_hat import SenseHat
 from image import image
+from logging import handlers
 import signal
 import os
+import logging
 
 max_attempts = 3
 img_path = "./data/imgs/"
@@ -11,6 +13,24 @@ db_path = r"./data/database.sqlite"
 
 image.path = img_path
 
+filename = "log.log"
+
+# if the logging is imported the root will be file name
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+# How the logs are going to look
+formatter = logging.Formatter('%(levelname)s:%(asctime)s:%(name)s:%(funcName)s:%(message)s')
+
+# Creates a new log file every time it runs
+should_roll_over = os.path.isfile(filename)
+handler = logging.handlers.RotatingFileHandler(filename, mode='w', backupCount=10)
+if should_roll_over:  # log already exists, roll over!
+    handler.doRollover()
+handler.setFormatter(formatter) 
+handler.setLevel(logging.DEBUG)
+
+logger.addHandler(handler)
 
 class main():
     stop = False
@@ -32,8 +52,11 @@ class main():
         for i in range(0, max_attempts):
             try:
                 # Get axes with z ["z"], y ["y"], x ["x"]
+                logger.info('Returned compass info')
                 return self.sense.get_compass_raw()
             except Exception as e:
+                logger.critical('Could not get compass data: {}'/
+                                .format(e))
                 print(e)
 
         return None
@@ -41,9 +64,11 @@ class main():
     def get_img(self):
         for i in range(0, max_attempts):
             try:
+                logger.info('Captured image')
                 img = Image.capture_image()
                 return img
             except Exception as e:
+                logger.critical('Could not get image: {}'.format(e))
                 print(e)
 
         return None
@@ -51,10 +76,12 @@ class main():
     def save_to_db(self, img_raw, img_score, magnetic_field_raw):
         for i in range(0, max_attempts):
             try:
+                logger.info('Saving to db')
                 self.data_manager.insert_data(
                     img_raw, img_score, magnetic_field_raw[0], magnetic_field_raw[1], magnetic_field_raw[2])
                 break
             except Exception as e:
+                logger.critical('Could not save to database: {}'.format(e))
                 print(e)
 
         return None
@@ -67,6 +94,7 @@ class main():
                 self.data_manager.delete_row(bad_row["id"])
 
             except Exception as e:
+                logger.critical
                 print(e)
 
         return None
@@ -79,6 +107,8 @@ class main():
             self.data_manager.close()
             return
 
+        logger.info('Start of loop manager')
+
         compass_list = self.get_compass()
         img = self.get_img()
 
@@ -86,6 +116,8 @@ class main():
 
         if self.data_manager.storage_available() == False:
             self.remove_bad_score_img()
+
+        logger.info('End of loop manager')
 
         self.manager()
 

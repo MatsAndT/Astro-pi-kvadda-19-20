@@ -5,6 +5,8 @@ from sqlite3 import Error
 from datetime import datetime
 from logging import handlers
 
+filename = "log.log"
+
 # if the logging is imported the root will be file name
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -12,11 +14,9 @@ logger.setLevel(logging.DEBUG)
 # How the logs are going to look
 formatter = logging.Formatter('%(levelname)s:%(asctime)s:%(name)s:%(funcName)s:%(message)s')
 
-filename = "log.log"
-
 # Creates a new log file every time it runs
 should_roll_over = os.path.isfile(filename)
-handler = logging.handlers.RotatingFileHandler(filename, mode='w', backupCount=5)
+handler = logging.handlers.RotatingFileHandler(filename, mode='w', backupCount=10)
 if should_roll_over:  # log already exists, roll over!
     handler.doRollover()
 handler.setFormatter(formatter) 
@@ -32,8 +32,8 @@ class DataManager(object):
         try:
             self.conn = sqlite3.connect(self.db_name)
         except Error as e:
+            logging.critical('Cannot connect to db: {}'.format(e))
             print(e)
-            logger.critical('Cannot connect to db')
 
     def create_table(self):
         """ create a table from the table varibal
@@ -60,8 +60,11 @@ class DataManager(object):
 
             self.conn.commit()
 
+            logging.info('Created a table')
+
             return True
         except Error as e:
+            logging.critical('Could not create a table: {}'.format(e))
             print(e)
             return False
 
@@ -93,8 +96,11 @@ class DataManager(object):
 
             self.conn.commit()
 
+            logging.info('Inserted a row of data')
+
             return cur.lastrowid
         except Error as e:
+            logging.critical('Could not get any data: {}'.format(e))
             print(e)
             return None
 
@@ -116,6 +122,7 @@ class DataManager(object):
         return rows[0]
 
     def delete_img(self, img_name):
+        logging.info('Started deleting file')
         """
         Delete img with img_name
         :param img_name: Name of the img
@@ -123,9 +130,11 @@ class DataManager(object):
 
         print("Deletes img from: "+str(id)+", img_name: "+str(img_name))
         os.remove(self.img_path+"/"+img_name)
+        logging.info('File removed')
         print("File removed")
 
     def delete_row(self, id):
+        logging.info('Started deleting row')
         """
         Delete row with id
         :param id: id of row
@@ -138,6 +147,7 @@ class DataManager(object):
         print("Row removed")
 
         self.conn.commit()
+        logging.info('Deleted row')
 
     def storage_available(self):
         """
@@ -149,7 +159,9 @@ class DataManager(object):
 
         try:
             b = os.path.getsize(self.img_path+"../")
+            logging.info('Got img file size')
         except FileNotFoundError as e:
+            logging.error('Could not find image file: {}'.format(e))
             print(e)
         else:
             if b > max_size:
@@ -174,5 +186,6 @@ class DataManager(object):
             self.conn.close()
             return True
         except Error as e:
+            logging.critical('Could not close itself: {}'.format(e))
             print(e)
             return False
