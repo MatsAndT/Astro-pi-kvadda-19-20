@@ -23,16 +23,6 @@ logger.setLevel(logging.DEBUG)
 # How the logs are going to look
 formatter = logging.Formatter('%(levelname)s:%(asctime)s:%(name)s:%(funcName)s:%(message)s')
 
-# Creates a new log file every time it runs
-should_roll_over = os.path.isfile(filename)
-handler = logging.handlers.RotatingFileHandler(filename, mode='w', backupCount=10)
-if should_roll_over:  # log already exists, roll over!
-    handler.doRollover()
-handler.setFormatter(formatter) 
-handler.setLevel(logging.DEBUG)
-
-logger.addHandler(handler)
-
 class Image:
     _ndvi = None
     _score = None
