@@ -10,7 +10,7 @@ from picamera import PiCamera
 picam = PiCamera()
 picam.resolution = (2592, 1944)
 path = "./data/"
-sleep(2) # Pause to give the camera time to adjust
+sleep(2)  # Pause to give the camera time to adjust
 
 id = 0
 
@@ -21,7 +21,9 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 # How the logs are going to look
-formatter = logging.Formatter('%(levelname)s:%(asctime)s:%(name)s:%(funcName)s:%(message)s')
+formatter = logging.Formatter(
+    '%(levelname)s:%(asctime)s:%(name)s:%(funcName)s:%(message)s')
+
 
 class Image:
     _ndvi = None
@@ -57,15 +59,16 @@ class Image:
             return self._ndvi
 
         # Get each color of the image
-        blue, _, near_ir = cv2.split(self.original) 
+        blue, _, near_ir = cv2.split(self.original)
 
         bottom = near_ir.astype(float) + blue.astype(float)
-        bottom[bottom == 0] = 0.0000000000000001 # Replace zeroes with near zero value
+        # Replace zeroes with near zero value
+        bottom[bottom == 0] = 0.0000000000000001
 
         top = near_ir.astype(float) - blue.astype(float)
-        
+
         self._ndvi = top / bottom
-        
+
         logger.debug('function ndvi end')
         return self._ndvi
 
@@ -76,22 +79,23 @@ class Image:
         :return: int score
         """
         logger.debug('function score start')
-        
+
         if self._score is not None:
             return self._score
 
         # Get average brightness from grayscale of original
-        brightness = cv2.mean(cv2.cvtColor(self.original, cv2.COLOR_BGR2GRAY))[0]
+        brightness = cv2.mean(cv2.cvtColor(
+            self.original, cv2.COLOR_BGR2GRAY))[0]
         ndvi_average = cv2.mean(self.ndvi)[0]
 
         # TODO: log brightness and average ndvi for debug
 
         score = round(brightness)
 
-        if -0.2 < ndvi_average  < 0: # Likely ocean
+        if -0.2 < ndvi_average < 0:  # Likely ocean
             score = round(score / 2)
 
-        if 200 < brightness: # Clouds
+        if 200 < brightness:  # Clouds
             score = round(score / 4)
 
         logger.debug('function score end')
@@ -100,7 +104,7 @@ class Image:
     @property
     def id(self):
         logger.debug('function score start')
-        
+
         # ID is read only, unless it havent been set
         logger.debug('function score end')
         return self._id
@@ -108,7 +112,7 @@ class Image:
     @id.setter
     def id_setter(self, value):
         logger.debug('function id_setter start')
-        
+
         if self._id is None:
             self._id = value
             return
@@ -129,8 +133,8 @@ class Image:
     @classmethod
     def capture_image(cls):
         logger.debug('function capture_image start')
-        
+
         picam.capture("{}{}.jpg".format(path, id + 1))
-        
+
         logger.debug('function score end')
         return cls(cv2.imread(path))
