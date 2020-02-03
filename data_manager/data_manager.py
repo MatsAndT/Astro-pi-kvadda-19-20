@@ -4,11 +4,9 @@ import sqlite3
 from sqlite3 import Error
 from datetime import datetime
 
-
 # if the logging is imported the root will be file name
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-
 
 class DataManager(object):
     def __init__(self, db_path, img_path):
