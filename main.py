@@ -20,17 +20,20 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 # How the logs are going to look
-formatter = logging.Formatter('%(levelname)s:%(asctime)s:%(name)s:%(funcName)s:%(message)s')
+formatter = logging.Formatter(
+    '%(levelname)s:%(asctime)s:%(name)s:%(funcName)s:%(message)s')
 
 # Creates a new log file every time it runs
 should_roll_over = os.path.isfile(filename)
-handler = logging.handlers.RotatingFileHandler(filename, mode='w', backupCount=10)
+handler = logging.handlers.RotatingFileHandler(
+    filename, mode='w', backupCount=10)
 if should_roll_over:  # log already exists, roll over!
     handler.doRollover()
-handler.setFormatter(formatter) 
+handler.setFormatter(formatter)
 handler.setLevel(logging.DEBUG)
 
 logger.addHandler(handler)
+
 
 class main():
     stop = False
@@ -48,7 +51,7 @@ class main():
         self.start_time = datetime.utcnow()
         self.stop_time = datetime.utcnow() + timedelta(hours=2, minutes=58)
         self.data_manager.create_table()  # TODO: if false (error) return
-        
+
         logger.debug('function main init end')
 
     def get_compass(self):
@@ -59,7 +62,7 @@ class main():
                 logger.info('Returned compass info')
                 return self.sense.get_compass_raw()
             except Exception as e:
-                logger.critical('Could not get compass data: {}'/
+                logger.critical('Could not get compass data: {}' /
                                 .format(e))
                 print(e)
 
