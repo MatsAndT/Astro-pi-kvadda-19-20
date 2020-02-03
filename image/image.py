@@ -4,7 +4,6 @@ import os
 import cv2
 import numpy
 import logging
-from logging import handlers
 from picamera import PiCamera
 
 picam = PiCamera()
@@ -14,15 +13,9 @@ sleep(2)  # Pause to give the camera time to adjust
 
 id = 0
 
-
 # if the logging is imported the root will be file name
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-
-# How the logs are going to look
-formatter = logging.Formatter(
-    '%(levelname)s:%(asctime)s:%(name)s:%(funcName)s:%(message)s')
-
 
 class Image:
     _ndvi = None
