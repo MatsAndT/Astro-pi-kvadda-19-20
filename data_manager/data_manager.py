@@ -3,16 +3,11 @@ import os
 import sqlite3
 from sqlite3 import Error
 from datetime import datetime
-from logging import handlers
 
 
 # if the logging is imported the root will be file name
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-
-# How the logs are going to look
-formatter = logging.Formatter(
-    '%(levelname)s:%(asctime)s:%(name)s:%(funcName)s:%(message)s')
 
 
 class DataManager(object):
