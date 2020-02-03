@@ -36,7 +36,7 @@ class main():
     stop = False
 
     def __init__(self):
-        logger.info('function __init__ start')
+        logger.info('main init')
         super().__init__()
 
         signal.signal(signal.SIGSTOP, self.stop_prosses)
@@ -49,10 +49,10 @@ class main():
         self.stop_time = datetime.utcnow() + timedelta(hours=2, minutes=58)
         self.data_manager.create_table()  # TODO: if false (error) return
         
-        logger.info('function __init__ end')
+        logger.debug('function main init end')
 
     def get_compass(self):
-        logger.info('function get_compass start')
+        logger.debug('function get_compass start')
         for i in range(0, max_attempts):
             try:
                 # Get axes with z ["z"], y ["y"], x ["x"]
@@ -63,11 +63,11 @@ class main():
                                 .format(e))
                 print(e)
 
-        logger.info('function __init__ end')
+        logger.debug('function __init__ end')
         return None
 
     def get_img(self):
-        logger.info('function get_img start')
+        logger.debug('function get_img start')
         for i in range(0, max_attempts):
             try:
                 logger.info('Captured image')
@@ -77,14 +77,14 @@ class main():
                 logger.critical('Could not get image: {}'.format(e))
                 print(e)
 
-        logger.info('function get_img end')
+        logger.debuge('function get_img end')
         return None
 
     def save_to_db(self, img_raw, img_score, magnetic_field_raw):
-        logger.info('function save_to_db start')
+        logger.debug('function save_to_db start')
         for i in range(0, max_attempts):
             try:
-                logger.info('Saving to db')
+                logger.debug('Saving to db')
                 self.data_manager.insert_data(
                     img_raw, img_score, magnetic_field_raw[0], magnetic_field_raw[1], magnetic_field_raw[2])
                 break
@@ -92,11 +92,11 @@ class main():
                 logger.critical('Could not save to database: {}'.format(e))
                 print(e)
 
-        logger.info('function save_to_db end')
+        logger.debug('function save_to_db end')
         return None
 
     def remove_bad_score_img(self):
-        logger.info('function remove_bad_score start')
+        logger.debug('function remove_bad_score start')
         for i in range(0, max_attempts):
             try:
                 bad_row = self.data_manager.get_bad_score()
@@ -107,7 +107,7 @@ class main():
                 logger.critical
                 print(e)
 
-        logger.info('function remove_bad_score start')
+        logger.debug('function remove_bad_score start')
         return None
 
     def stop_prosses(self):
@@ -128,9 +128,7 @@ class main():
         if self.data_manager.storage_available() == False:
             self.remove_bad_score_img()
 
-        logger.info('End of loop manager')
-
-        logger.info('function manager end')
+        logger.debug('function manager end')
         self.manager()
 
 
