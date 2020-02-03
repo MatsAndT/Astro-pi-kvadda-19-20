@@ -12,12 +12,14 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 # How the logs are going to look
-formatter = logging.Formatter('%(levelname)s:%(asctime)s:%(name)s:%(funcName)s:%(message)s')
+formatter = logging.Formatter(
+    '%(levelname)s:%(asctime)s:%(name)s:%(funcName)s:%(message)s')
+
 
 class DataManager(object):
     def __init__(self, db_path, img_path):
         logger.info('Class DataManager init')
-        
+
         super().__init__()
         self.db_name = db_path
         self.img_path = img_path
@@ -27,9 +29,8 @@ class DataManager(object):
         except Error as e:
             logger.critical('Cannot connect to db: {}'.format(e))
             print(e)
-        
-        logger.debug('Class __init__ end')
 
+        logger.debug('Class __init__ end')
 
     def create_table(self):
         """ create a table from the table varibal
@@ -64,7 +65,7 @@ class DataManager(object):
             logger.critical('Could not create a table: {}'.format(e))
             print(e)
             return False
-        
+
         logger.debug('Function create_table end')
 
     def insert_data(self, img_name, img_score, magnetometer):
@@ -133,7 +134,7 @@ class DataManager(object):
 
         print("Deletes img from: "+str(id)+", img_name: "+str(img_name))
         os.remove(self.img_path+"/"+img_name)
-        
+
         logger.debug('Function delete_img end')
         print("File removed")
 
@@ -151,7 +152,7 @@ class DataManager(object):
         print("Row removed")
 
         self.conn.commit()
-        
+
         logger.debug('Function delete_row end')
 
     def storage_available(self):
@@ -175,7 +176,7 @@ class DataManager(object):
             else:
                 logger.info("Storage not available")
                 return True
-        
+
         logger.debug('Function storage_available end')
 
     def close(self):
@@ -200,5 +201,5 @@ class DataManager(object):
             logger.error('Could not close itself: {}'.format(e))
             print(e)
             return False
-        
+
         logger.debug('Function close end')
