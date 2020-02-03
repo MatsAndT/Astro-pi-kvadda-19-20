@@ -29,7 +29,7 @@ class Image:
     _id = None
 
     def __init__(self, image, id_=None):
-        logger.info('function __init__ start')
+        logger.info('Image init')
 
         # Check if image is numpy.ndarray
         if not isinstance(image, numpy.ndarray):
@@ -43,7 +43,7 @@ class Image:
         else:
             self.id = id_
 
-        logger.info('function __init__ end')
+        logger.debug('function __init__ end')
 
     @property
     def ndvi(self):
@@ -51,7 +51,7 @@ class Image:
         Calculates NDVI values for each pixel (NDVI = (NIR + B) / (NIR - B))
         :return: numpy.ndarray NDVI image
         """
-        logger.info('function ndvi start')
+        logger.debug('function ndvi start')
 
         if self._ndvi is not None:
             return self._ndvi
@@ -66,7 +66,7 @@ class Image:
         
         self._ndvi = top / bottom
         
-        logger.info('function ndvi end')
+        logger.debug('function ndvi end')
         return self._ndvi
 
     @property
@@ -75,7 +75,7 @@ class Image:
         Calculates the score based on average NDVI value and average brightness.
         :return: int score
         """
-        logger.info('function score start')
+        logger.debug('function score start')
         
         if self._score is not None:
             return self._score
@@ -94,43 +94,43 @@ class Image:
         if 200 < brightness: # Clouds
             score = round(score / 4)
 
-        logger.info('function score end')
+        logger.debug('function score end')
         return max(0, score)
 
     @property
     def id(self):
-        logger.info('function score start')
+        logger.debug('function score start')
         
         # ID is read only, unless it havent been set
-        logger.info('function score end')
+        logger.debug('function score end')
         return self._id
 
     @id.setter
     def id_setter(self, value):
-        logger.info('function id_setter start')
+        logger.debug('function id_setter start')
         
         if self._id is None:
             self._id = value
             return
 
         raise AttributeError("ID can only be set once")
-        logger.info('function id_setter end')
+        logger.debug('function id_setter end')
 
     @property
     def path(self):
-        logger.info('function path start and end')
+        logger.debug('function path start and end')
         return os.path.abspath("{}{}.jpg".format(path, self.id))
 
     @property
     def name(self):
-        logger.info('function name start and end')
+        logger.debug('function name start and end')
         return "{self.id}.jpg"
 
     @classmethod
     def capture_image(cls):
-        logger.info('function capture_image start')
+        logger.debug('function capture_image start')
         
         picam.capture("{}{}.jpg".format(path, id + 1))
         
-        logger.info('function score end')
+        logger.debug('function score end')
         return cls(cv2.imread(path))
