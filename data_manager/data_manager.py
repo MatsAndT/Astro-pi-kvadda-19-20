@@ -5,7 +5,6 @@ from sqlite3 import Error
 from datetime import datetime
 from logging import handlers
 
-filename = "log.log"
 
 # if the logging is imported the root will be file name
 logger = logging.getLogger(__name__)

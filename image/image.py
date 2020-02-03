@@ -14,7 +14,6 @@ sleep(2)  # Pause to give the camera time to adjust
 
 id = 0
 
-filename = "log.log"
 
 # if the logging is imported the root will be file name
 logger = logging.getLogger(__name__)
