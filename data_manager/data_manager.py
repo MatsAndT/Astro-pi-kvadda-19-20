@@ -1,11 +1,17 @@
-import sqlite3
+import logging
 import os
+import sqlite3
 from sqlite3 import Error
 from datetime import datetime
 
+# if the logging is imported the root will be file name
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 class DataManager(object):
     def __init__(self, db_path, img_path):
+        logger.info('Class DataManager init')
+
         super().__init__()
         self.db_name = db_path
         self.img_path = img_path
@@ -13,7 +19,10 @@ class DataManager(object):
         try:
             self.conn = sqlite3.connect(self.db_name)
         except Error as e:
+            logger.critical('Cannot connect to db: {}'.format(e))
             print(e)
+
+        logger.debug('Class __init__ end')
 
     def create_table(self):
         """ create a table from the table varibal
@@ -21,6 +30,7 @@ class DataManager(object):
 
         If the table is stored correctly then a True is retuned, if not a False is retuned
         """
+        logger.debug('Function create_table start')
 
         table = """CREATE TABLE IF NOT EXISTS sensor_data (
             id integer PRIMARY KEY,
@@ -40,10 +50,15 @@ class DataManager(object):
 
             self.conn.commit()
 
+            logger.info('Created a table')
+
             return True
         except Error as e:
+            logger.critical('Could not create a table: {}'.format(e))
             print(e)
             return False
+
+        logger.debug('Function create_table end')
 
     def insert_data(self, img_name, img_score, magnetometer):
         """
@@ -58,8 +73,9 @@ class DataManager(object):
         img_score i stored as a int
         Magnetometrer x y z raw data in uT micro teslas : saved as real)
 
-        If Error is threw then Noen is returned 
+        If Error is threw then None is returned 
         """
+        logger.debug('Function insert_data start')
 
         sql = ''' INSERT INTO sensor_data(time,img_score,magnetometer_z,magnetometer_y,magnetometer_x)
                 VALUES(?,?,?,?,?) '''
@@ -73,16 +89,21 @@ class DataManager(object):
 
             self.conn.commit()
 
+            logger.info('Inserted a row of data: id {}'.format(cur.lastrowid))
+
             return cur.lastrowid
         except Error as e:
+            logger.critical('Could not insert data: {}'.format(e))
             print(e)
             return None
+        logger.debug('Function insert_table end')
 
     def get_bad_score(self):
         """
         Getting img with bad score
         :return: bad score row
         """
+        logger.debug('Function get_bad_score start')
 
         cur = self.conn.cursor()
 
@@ -93,6 +114,7 @@ class DataManager(object):
         # Getting worst score
         rows = cur.fetchall()
 
+        logger.debug('Function get_bad_score end')
         return rows[0]
 
     def delete_img(self, img_name):
@@ -100,9 +122,12 @@ class DataManager(object):
         Delete img with img_name
         :param img_name: Name of the img
         """
+        logger.debug('Function delete_img start')
 
         print("Deletes img from: "+str(id)+", img_name: "+str(img_name))
         os.remove(self.img_path+"/"+img_name)
+
+        logger.debug('Function delete_img end')
         print("File removed")
 
     def delete_row(self, id):
@@ -110,6 +135,7 @@ class DataManager(object):
         Delete row with id
         :param id: id of row
         """
+        logger.debug('Function delete_row start')
 
         cur = self.conn.cursor()
 
@@ -119,23 +145,31 @@ class DataManager(object):
 
         self.conn.commit()
 
+        logger.debug('Function delete_row end')
+
     def storage_available(self):
         """
         Se if the size of db is less then max_size
         :return: False (less) or True (bigger)
         """
+        logger.debug('Function storage_available start')
 
         max_size = 2.9*10**9
 
         try:
             b = os.path.getsize(self.img_path+"../")
         except FileNotFoundError as e:
+            logger.warning('Could not find image file: {}'.format(e))
             print(e)
         else:
             if b > max_size:
+                logger.info("Storage available")
                 return False
             else:
+                logger.info("Storage not available")
                 return True
+
+        logger.debug('Function storage_available end')
 
     def close(self):
         """
@@ -146,13 +180,18 @@ class DataManager(object):
 
         If connection is not close then False is returned
         """
+        logger.debug('Function close start')
 
         try:
             self.conn.commit()
 
             # Close the connection
             self.conn.close()
+            logger.info("DB conn closed")
             return True
         except Error as e:
+            logger.error('Could not close itself: {}'.format(e))
             print(e)
             return False
+
+        logger.debug('Function close end')
