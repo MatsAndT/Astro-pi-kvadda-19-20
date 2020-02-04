@@ -1,8 +1,9 @@
 import logging
 import os
 import sqlite3
-from sqlite3 import Error
 from datetime import datetime
+from sqlite3 import Error
+from traceback import format_exc
 
 # if the logging is imported the root will be file name
 logger = logging.getLogger(__name__)
@@ -19,7 +20,7 @@ class DataManager(object):
         try:
             self.conn = sqlite3.connect(self.db_name)
         except Error as e:
-            logger.critical('Cannot connect to db: {}'.format(e))
+            logger.critical('Cannot connect to db: {}'.format(format_exc()))
 
         logger.debug('Class __init__ end')
 
@@ -53,7 +54,7 @@ class DataManager(object):
 
             return True
         except Error as e:
-            logger.critical('Could not create a table: {}'.format(e))
+            logger.critical('Could not create a table: {}'.format(format_exc()))
             return False
 
         logger.debug('Function create_table end')
@@ -91,7 +92,7 @@ class DataManager(object):
 
             return cur.lastrowid
         except Error as e:
-            logger.critical('Could not insert data: {}'.format(e))
+            logger.critical('Could not insert data: {}'.format(format_exc()))
             return None
         logger.debug('Function insert_table end')
 

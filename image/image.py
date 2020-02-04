@@ -1,9 +1,10 @@
+import logging
+import os
 from time import sleep
 
-import os
 import cv2
 import numpy
-import logging
+
 from picamera import PiCamera
 
 picam = PiCamera()
