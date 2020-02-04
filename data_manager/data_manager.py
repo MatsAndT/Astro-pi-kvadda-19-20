@@ -53,7 +53,13 @@ class DataManager(object):
             logger.info('Created a table')
 
             return True
-        except Error as e:
+        except Exception as e:
+            table_exists = "SELECT name FROM sqlite_master WHERE type='table' AND name='spwords'"
+            if conn.execute(table_exists).fetchone() and isinstance(e, sqlite3.OperationalError):
+                # sqlite3 docs say ProgrammingError is raised when table exists, although OperationalError was raised when testing.
+                logger.warning('Table already exists: {}'.format(format_exc()))
+                return True
+
             logger.critical('Could not create a table: {}'.format(format_exc()))
             return False
 
