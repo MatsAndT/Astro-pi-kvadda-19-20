@@ -1,6 +1,7 @@
 import logging
 import os
 import signal
+import atexit
 from datetime import datetime, timedelta
 from logging import handlers
 from traceback import format_exc
@@ -45,7 +46,7 @@ class main():
         logger.info('main init')
         super().__init__()
 
-        signal.signal(signal.SIGSTOP, self.stop_prosses)
+        atexit.register(self.stop_prosses) 
         signal.signal(signal.SIGTERM, self.stop_prosses)
 
         self.data_manager = DataManager(db_path, img_path)
