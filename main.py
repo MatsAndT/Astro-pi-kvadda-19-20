@@ -80,7 +80,7 @@ class main():
                 logger.critical('Could not get image: {}'.format(e))
                 print(e)
 
-        logger.debuge('function get_img end')
+        logger.debug('function get_img end')
         return None
 
     def save_to_db(self, img_raw, img_score, magnetic_field_raw):
