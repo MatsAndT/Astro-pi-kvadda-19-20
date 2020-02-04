@@ -1,13 +1,12 @@
 import logging
 import os
 import signal
-import traceback
 from datetime import datetime, timedelta
 from logging import handlers
+from traceback import format_exc
 
 from sense_hat import SenseHat
 
-import format_exc
 from data_manager.data_manager import DataManager
 from image import image
 
