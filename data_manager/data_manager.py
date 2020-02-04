@@ -20,7 +20,6 @@ class DataManager(object):
             self.conn = sqlite3.connect(self.db_name)
         except Error as e:
             logger.critical('Cannot connect to db: {}'.format(e))
-            print(e)
 
         logger.debug('Class __init__ end')
 
@@ -55,7 +54,6 @@ class DataManager(object):
             return True
         except Error as e:
             logger.critical('Could not create a table: {}'.format(e))
-            print(e)
             return False
 
         logger.debug('Function create_table end')
@@ -94,7 +92,6 @@ class DataManager(object):
             return cur.lastrowid
         except Error as e:
             logger.critical('Could not insert data: {}'.format(e))
-            print(e)
             return None
         logger.debug('Function insert_table end')
 
@@ -124,11 +121,10 @@ class DataManager(object):
         """
         logger.debug('Function delete_img start')
 
-        print("Deletes img from: "+str(id)+", img_name: "+str(img_name))
+        logger.info("Deleting img from: "+str(id)+", img_name: "+str(img_name))
         os.remove(self.img_path+"/"+img_name)
 
         logger.debug('Function delete_img end')
-        print("File removed")
 
     def delete_row(self, id):
         """
@@ -139,9 +135,8 @@ class DataManager(object):
 
         cur = self.conn.cursor()
 
-        print("Deletres row with id: "+str(id))
+        logger.info("Deleting row with id: "+str(id))
         cur.execute("DELETE FROM sensor_data WHERE id=?", (id))
-        print("Row removed")
 
         self.conn.commit()
 
@@ -160,7 +155,6 @@ class DataManager(object):
             b = os.path.getsize(self.img_path+"../")
         except FileNotFoundError as e:
             logger.warning('Could not find image file: {}'.format(e))
-            print(e)
         else:
             if b > max_size:
                 logger.info("Storage available")
@@ -191,7 +185,6 @@ class DataManager(object):
             return True
         except Error as e:
             logger.error('Could not close itself: {}'.format(e))
-            print(e)
             return False
 
         logger.debug('Function close end')

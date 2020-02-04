@@ -63,7 +63,6 @@ class main():
                 return self.sense.get_compass_raw()
             except Exception as e:
                 logger.critical('Could not get compass data: {}'.format(e))
-                print(e)
 
         logger.debug('function __init__ end')
         return None
@@ -77,7 +76,6 @@ class main():
                 return img
             except Exception as e:
                 logger.critical('Could not get image: {}'.format(e))
-                print(e)
 
         logger.debuge('function get_img end')
         return None
@@ -92,7 +90,6 @@ class main():
                 break
             except Exception as e:
                 logger.critical('Could not save to database: {}'.format(e))
-                print(e)
 
         logger.debug('function save_to_db end')
         return None
@@ -107,7 +104,6 @@ class main():
 
             except Exception as e:
                 logger.critical
-                print(e)
 
         logger.debug('function remove_bad_score start')
         return None
