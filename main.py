@@ -1,11 +1,14 @@
-from data_manager.data_manager import DataManager
-from datetime import datetime, timedelta
-from sense_hat import SenseHat
-from image import image
-from logging import handlers
-import signal
-import os
 import logging
+import os
+import signal
+from datetime import datetime, timedelta
+from logging import handlers
+from traceback import format_exc
+
+from sense_hat import SenseHat
+
+from data_manager.data_manager import DataManager
+from image import image
 
 max_attempts = 3
 img_path = "./data/imgs/"
@@ -62,9 +65,7 @@ class main():
                 logger.info('Returned compass info')
                 return self.sense.get_compass_raw()
             except Exception as e:
-                logger.critical('Could not get compass data: {}' /
-                                .format(e))
-                print(e)
+                logger.critical('Could not get compass data: {}'.format(format_exc()))
 
         logger.debug('function __init__ end')
         return None
@@ -77,8 +78,7 @@ class main():
                 img = Image.capture_image()
                 return img
             except Exception as e:
-                logger.critical('Could not get image: {}'.format(e))
-                print(e)
+                logger.critical('Could not get image: {}'.format(format_exc()))
 
         logger.debug('function get_img end')
         return None
@@ -92,8 +92,7 @@ class main():
                     img_raw, img_score, magnetic_field_raw[0], magnetic_field_raw[1], magnetic_field_raw[2])
                 break
             except Exception as e:
-                logger.critical('Could not save to database: {}'.format(e))
-                print(e)
+                logger.critical('Could not save to database: {}'.format(format_exc()))
 
         logger.debug('function save_to_db end')
         return None
@@ -107,8 +106,7 @@ class main():
                 self.data_manager.delete_row(bad_row["id"])
 
             except Exception as e:
-                logger.critical
-                print(e)
+                logger.critical('Could not remove image: {}'.format(format_exc()))
 
         logger.debug('function remove_bad_score start')
         return None
