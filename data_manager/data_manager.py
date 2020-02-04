@@ -55,7 +55,7 @@ class DataManager(object):
             return True
         except Exception as e:
             table_exists = "SELECT name FROM sqlite_master WHERE type='table' AND name='spwords'"
-            if conn.execute(table_exists).fetchone() and isinstance(e, sqlite3.OperationalError):
+            if self.conn.execute(table_exists).fetchone() and isinstance(e, sqlite3.OperationalError):
                 # sqlite3 docs say ProgrammingError is raised when table exists, although OperationalError was raised when testing.
                 logger.warning('Table already exists: {}'.format(format_exc()))
                 return True
