@@ -62,8 +62,7 @@ class main():
                 logger.info('Returned compass info')
                 return self.sense.get_compass_raw()
             except Exception as e:
-                logger.critical('Could not get compass data: {}' /
-                                .format(e))
+                logger.critical('Could not get compass data: {}'.format(e))
                 print(e)
 
         logger.debug('function __init__ end')
