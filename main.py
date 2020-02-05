@@ -13,7 +13,7 @@ from image import image
 
 max_attempts = 3
 img_path = "./data/imgs/"
-db_path = r"./data/database.sqlite"
+db_path = "./data/database.sqlite"
 
 image.path = img_path
 
