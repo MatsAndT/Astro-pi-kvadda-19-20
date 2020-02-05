@@ -110,8 +110,8 @@ class Image:
             self._id = value
             return
 
-        raise AttributeError("ID can only be set once")
         logger.debug('function id_setter end')
+        raise AttributeError("ID can only be set once")
 
     @property
     def path(self):
