@@ -122,15 +122,15 @@ class DataManager(object):
         logger.debug('Function get_bad_score end')
         return rows[0]
 
-    def delete_img(self, img_name):
+    def delete_img(self, img_id):
         """
         Delete img with img_name
-        :param img_name: Name of the img
+        :param img_id: Id of the img
         """
         logger.debug('Function delete_img start')
 
-        logger.info("Deleting img from: "+str(id)+", img_name: "+str(img_name))
-        os.remove(self.img_path+"/"+img_name)
+        logger.info("Deleting img: "+str(img_id))
+        os.remove(self.img_path+str(img_id)+".jpg")
 
         logger.debug('Function delete_img end')
 
