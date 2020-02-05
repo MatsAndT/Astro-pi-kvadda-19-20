@@ -124,7 +124,7 @@ class main():
 
     def manager(self):
         logger.info('function manager start')
-        self.cycle =+ 1
+        self.cycle += 1
         print("On cycle: "+str(self.cycle))
 
         if self.stop or self.stop_time <= datetime.utcnow():
