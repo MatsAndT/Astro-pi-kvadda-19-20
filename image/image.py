@@ -127,7 +127,7 @@ class Image:
     def capture_image(cls):
         logger.debug('function capture_image start')
 
-        picam.capture("{}{}.jpg".format(path, id + 1))
+        picam.capture("{}{}.jpg".format(path, id))
 
         logger.debug('function score end')
         return cls(cv2.imread(path))
