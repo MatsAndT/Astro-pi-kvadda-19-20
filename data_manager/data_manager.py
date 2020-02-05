@@ -36,7 +36,7 @@ class DataManager(object):
         table = """CREATE TABLE IF NOT EXISTS sensor_data (
             id integer PRIMARY KEY,
             time timestamp NOT NULL,
-            img_name TEXT,
+            img_name INTEGER,
             img_score INTEGER,
             magnetometer_z REAL,
             magnetometer_y REAL,
@@ -83,8 +83,8 @@ class DataManager(object):
         """
         logger.debug('Function insert_data start')
 
-        sql = ''' INSERT INTO sensor_data(time,img_score,magnetometer_z,magnetometer_y,magnetometer_x)
-                VALUES(?,?,?,?,?) '''
+        sql = ''' INSERT INTO sensor_data(time,img_name,img_score,magnetometer_z,magnetometer_y,magnetometer_x)
+                VALUES(?,?,?,?,?,?) '''
 
         try:
             cur = self.conn.cursor()

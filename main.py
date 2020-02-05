@@ -89,13 +89,13 @@ class main():
         logger.debug('function get_img end')
         return None
 
-    def save_to_db(self, img_raw, img_score, magnetic_field_raw):
+    def save_to_db(self, img_name, img_score, magnetic_field_raw):
         logger.debug('function save_to_db start')
         for i in range(0, max_attempts):
             try:
                 logger.debug('Saving to db')
                 self.data_manager.insert_data(
-                    img_raw, img_score, magnetic_field_raw)
+                    img_name, img_score, magnetic_field_raw)
                 break
             except Exception as e:
                 logger.critical('Could not save to database: {}'.format(format_exc()))
