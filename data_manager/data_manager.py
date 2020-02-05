@@ -18,7 +18,8 @@ class DataManager(object):
         self.img_path = img_path
 
         try:
-            self.conn = sqlite3.connect(self.db_name)
+            self.conn = sqlite3.connect(sqlite3.connect(os.path.abspath(self.db_name))
+)
         except Error as e:
             logger.critical('Cannot connect to db: {}'.format(format_exc()))
 
