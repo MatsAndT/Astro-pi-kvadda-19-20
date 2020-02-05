@@ -129,5 +129,5 @@ class Image:
 
         picam.capture("{}{}.jpg".format(path, id))
 
-        logger.debug('function score end')
-        return cls(cv2.imread(path))
+        logger.debug('function capture_image end')
+        return cls(cv2.imread("{}{}.jpg".format(path, id)))
