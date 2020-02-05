@@ -90,7 +90,7 @@ class main():
             try:
                 logger.debug('Saving to db')
                 self.data_manager.insert_data(
-                    img_raw, img_score, magnetic_field_raw[0], magnetic_field_raw[1], magnetic_field_raw[2])
+                    img_raw, img_score, magnetic_field_raw)
                 break
             except Exception as e:
                 logger.critical('Could not save to database: {}'.format(format_exc()))
