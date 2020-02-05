@@ -33,10 +33,10 @@ class Image:
         self.original = image
         global id
         if id_ is None:
-            self.id = id
+            self._id = id
             id += 1
         else:
-            self.id = id_
+            self._id = id_
 
         logger.debug('function __init__ end')
 
