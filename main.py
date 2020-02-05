@@ -81,7 +81,7 @@ class main():
         for i in range(0, max_attempts):
             try:
                 logger.info('Captured image')
-                img = Image.capture_image()
+                img = image.Image.capture_image()
                 return img
             except Exception as e:
                 logger.critical('Could not get image: {}'.format(format_exc()))
