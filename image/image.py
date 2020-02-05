@@ -103,7 +103,7 @@ class Image:
         return self._id
 
     @id.setter
-    def id_setter(self, value):
+    def id(self, value):
         logger.debug('function id_setter start')
 
         if self._id is None:
