@@ -1,137 +1,177 @@
-import sqlite3, os
-from sqlite3 import Error
+import logging
+import os
+import sqlite3
 from datetime import datetime
+from sqlite3 import Error
+from traceback import format_exc
 
+# if the logging is imported the root will be file name
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
-class DataManager():
-    db_name = r"./astropi.sqlite"
+class DataManager(object):
+    def __init__(self, db_path, img_path):
+        logger.info('Class DataManager init')
 
-    def __init__(self):
         super().__init__()
+        self.db_name = db_path
+        self.img_path = img_path
 
         try:
-            # Connecting to db
-            self.conn = sqlite3.connect(self.db_name)
+            self.conn = sqlite3.connect(os.path.abspath(self.db_name))
+
         except Error as e:
-            print(e)
-    
+            logger.critical('Cannot connect to db: {}'.format(format_exc()))
+
+        logger.debug('Class __init__ end')
+
     def create_table(self):
         """ create a table from the table varibal
         :return: True
 
         If the table is stored correctly then a True is retuned, if not a False is retuned
         """
-        
+        logger.debug('Function create_table start')
+
         table = """CREATE TABLE IF NOT EXISTS sensor_data (
             id integer PRIMARY KEY,
             time timestamp NOT NULL,
-            img blob,
+            img_name TEXT,
             img_score INTEGER,
-            magnetometer_z real,
-            magnetometer_y real,
-            magnetometer_x real
+            magnetometer_z REAL,
+            magnetometer_y REAL,
+            magnetometer_x REAL
         );"""
 
         try:
-            # Getting cursor
             c = self.conn.cursor()
 
             # Create table
             c.execute(table)
 
-            # Save (commit) the changes
             self.conn.commit()
-            
+
+            logger.info('Created a table')
+
             return True
-        except Error as e:
-            print(e)
+        except Exception as e:
+            table_exists = "SELECT name FROM sqlite_master WHERE type='table' AND name='spwords'"
+            if self.conn.execute(table_exists).fetchone() and isinstance(e, sqlite3.OperationalError):
+                # sqlite3 docs say ProgrammingError is raised when table exists, although OperationalError was raised when testing.
+                logger.warning('Table already exists: {}'.format(format_exc()))
+                return True
+
+            logger.critical('Could not create a table: {}'.format(format_exc()))
             return False
 
+        logger.debug('Function create_table end')
 
-    def insert_data(self, img, img_score, magnetometer_z, magnetometer_y, magnetometer_x):
+    def insert_data(self, img_name, img_score, magnetometer):
         """
         Inserting data into sensor_data tabel
-        :param img: Image to be inserted
+        :param img_name: Name of image
+        :param img_score: Score of image
+        :param magnetometer: Magnetometer data, z, y and x
         :return: project id
 
         Id is auto set : last++
         Time is a timestamp : saved as timestamp
-        Img is stored as a blob
         img_score i stored as a int
         Magnetometrer x y z raw data in uT micro teslas : saved as real)
 
-        If Error is threw then Noen is returned 
+        If Error is threw then None is returned 
         """
-        
-        sql = ''' INSERT INTO sensor_data(time,img,img_score,magnetometer_z,magnetometer_y,magnetometer_x)
+        logger.debug('Function insert_data start')
+
+        sql = ''' INSERT INTO sensor_data(time,img_score,magnetometer_z,magnetometer_y,magnetometer_x)
                 VALUES(?,?,?,?,?) '''
-        
+
         try:
-            # Getting cursor
             cur = self.conn.cursor()
 
             # Insert a row of data
-            cur.execute(sql, (datetime.now(), img, img_score, magnetometer_z, magnetometer_y, magnetometer_x))
+            cur.execute(sql, (datetime.now(), img_name, img_score,
+                              magnetometer["z"], magnetometer["y"], magnetometer["x"]))
 
-            # Save (commit) the changes
             self.conn.commit()
+
+            logger.info('Inserted a row of data: id {}'.format(cur.lastrowid))
 
             return cur.lastrowid
         except Error as e:
-            print(e)
+            logger.critical('Could not insert data: {}'.format(format_exc()))
             return None
+        logger.debug('Function insert_table end')
 
     def get_bad_score(self):
         """
         Getting img with bad score
-        :return: bad score row id
+        :return: bad score row
         """
+        logger.debug('Function get_bad_score start')
 
-        # Getting cursor
         cur = self.conn.cursor()
 
-        # Selecting 10 worst score
-        cur.execute("SELECT id, img_score FROM sensor_data ORDER BY img_score ASC LIMIT 10")
+        # Selecting worst score
+        cur.execute(
+            "SELECT id, img_name, img_score FROM sensor_data ORDER BY img_score ASC LIMIT 1")
 
-        # Getting 10 worst score
+        # Getting worst score
         rows = cur.fetchall()
 
-        return rows[0]["id"]
+        logger.debug('Function get_bad_score end')
+        return rows[0]
+
+    def delete_img(self, img_name):
+        """
+        Delete img with img_name
+        :param img_name: Name of the img
+        """
+        logger.debug('Function delete_img start')
+
+        logger.info("Deleting img from: "+str(id)+", img_name: "+str(img_name))
+        os.remove(self.img_path+"/"+img_name)
+
+        logger.debug('Function delete_img end')
 
     def delete_row(self, id):
         """
         Delete row with id
         :param id: id of row
-        :return: Deleted id of row
         """
+        logger.debug('Function delete_row start')
 
-        # Getting cursor
         cur = self.conn.cursor()
 
-        # Delets the row with id = id
-        print("Deletes img from: "+str(id))
+        logger.info("Deleting row with id: "+str(id))
         cur.execute("DELETE FROM sensor_data WHERE id=?", (id))
 
-        # Save (commit) the changes
         self.conn.commit()
 
-        return id
+        logger.debug('Function delete_row end')
 
     def storage_available(self):
         """
         Se if the size of db is less then max_size
         :return: False (less) or True (bigger)
         """
+        logger.debug('Function storage_available start')
 
         max_size = 2.9*10**9
 
         try:
-            b = os.path.getsize(self.db_name)
+            b = os.path.getsize(self.img_path+"../")
         except FileNotFoundError as e:
-            print(e)
+            logger.warning('Could not find image file: {}'.format(e))
         else:
-            if b > max_size: return False 
-            else: return True
+            if b > max_size:
+                logger.info("Storage available")
+                return False
+            else:
+                logger.info("Storage not available")
+                return True
+
+        logger.debug('Function storage_available end')
 
     def close(self):
         """
@@ -142,14 +182,17 @@ class DataManager():
 
         If connection is not close then False is returned
         """
+        logger.debug('Function close start')
 
         try:
-            # Save (commit) the changes
             self.conn.commit()
 
             # Close the connection
             self.conn.close()
+            logger.info("DB conn closed")
             return True
         except Error as e:
-            print(e)
+            logger.error('Could not close itself: {}'.format(e))
             return False
+
+        logger.debug('Function close end')
