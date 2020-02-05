@@ -49,17 +49,17 @@ class main():
         atexit.register(self.stop_prosses) 
         signal.signal(signal.SIGTERM, self.stop_prosses)
 
+        # Test if the data and imgs path exist
+        if not os.path.exists(img_path):
+            logger.info("Data path not exist, create folders")
+            os.makedirs(img_path)
+
         self.data_manager = DataManager(db_path, img_path)
         self.sense = SenseHat()
 
         self.start_time = datetime.utcnow()
         self.stop_time = datetime.utcnow() + timedelta(hours=2, minutes=58)
         self.data_manager.create_table()  # TODO: if false (error) return
-
-        # Test if the data and imgs path exist
-        if not os.path.exists(img_path):
-            logger.info("Data path not exist, create folders")
-            os.makedirs(img_path)
 
         logger.debug('function main init end')
 
