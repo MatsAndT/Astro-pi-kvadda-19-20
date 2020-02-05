@@ -32,7 +32,7 @@ class Image:
 
         self.original = image
         global id
-        if id is None:
+        if id_ is None:
             self.id = id
             id += 1
         else:
