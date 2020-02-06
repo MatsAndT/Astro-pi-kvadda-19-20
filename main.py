@@ -1,6 +1,7 @@
 import logging
 import os
 import signal
+import atexit
 from datetime import datetime, timedelta
 from logging import handlers
 from traceback import format_exc
@@ -12,7 +13,7 @@ from image import image
 
 max_attempts = 3
 img_path = "./data/imgs/"
-db_path = r"./data/database.sqlite"
+db_path = "./data/database.sqlite"
 
 image.path = img_path
 
@@ -40,13 +41,19 @@ logger.addHandler(handler)
 
 class main():
     stop = False
+    cycle = 0
 
     def __init__(self):
         logger.info('main init')
         super().__init__()
 
-        signal.signal(signal.SIGSTOP, self.stop_prosses)
+        atexit.register(self.stop_prosses) 
         signal.signal(signal.SIGTERM, self.stop_prosses)
+
+        # Test if the data and imgs path exist
+        if not os.path.exists(img_path):
+            logger.info("Data path not exist, create folders")
+            os.makedirs(img_path)
 
         self.data_manager = DataManager(db_path, img_path)
         self.sense = SenseHat()
@@ -75,7 +82,7 @@ class main():
         for i in range(0, max_attempts):
             try:
                 logger.info('Captured image')
-                img = Image.capture_image()
+                img = image.Image.capture_image()
                 return img
             except Exception as e:
                 logger.critical('Could not get image: {}'.format(format_exc()))
@@ -83,13 +90,13 @@ class main():
         logger.debug('function get_img end')
         return None
 
-    def save_to_db(self, img_raw, img_score, magnetic_field_raw):
+    def save_to_db(self, img_name, img_score, magnetic_field_raw):
         logger.debug('function save_to_db start')
         for i in range(0, max_attempts):
             try:
                 logger.debug('Saving to db')
                 self.data_manager.insert_data(
-                    img_raw, img_score, magnetic_field_raw[0], magnetic_field_raw[1], magnetic_field_raw[2])
+                    img_name, img_score, magnetic_field_raw)
                 break
             except Exception as e:
                 logger.critical('Could not save to database: {}'.format(format_exc()))
@@ -117,16 +124,24 @@ class main():
 
     def manager(self):
         logger.info('function manager start')
+        self.cycle += 1
+        print("On cycle: "+str(self.cycle))
+
         if self.stop or self.stop_time <= datetime.utcnow():
             self.data_manager.close()
             return
 
+        print("Getting compass")
         compass_list = self.get_compass()
+        
+        print("Getting img")
         img = self.get_img()
 
+        print("Save to db")
         self.save_to_db(img.id, img.score, compass_list)
 
         if self.data_manager.storage_available() == False:
+            print("Remove bad img")
             self.remove_bad_score_img()
 
         logger.debug('function manager end')
@@ -134,4 +149,4 @@ class main():
 
 
 if __name__ == "__main__":
-    main()
+    main().manager()

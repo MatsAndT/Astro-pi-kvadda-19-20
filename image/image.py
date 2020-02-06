@@ -32,7 +32,7 @@ class Image:
 
         self.original = image
         global id
-        if id is None:
+        if id_ is None:
             self.id = id
             id += 1
         else:
@@ -103,15 +103,15 @@ class Image:
         return self._id
 
     @id.setter
-    def id_setter(self, value):
+    def id(self, value):
         logger.debug('function id_setter start')
 
         if self._id is None:
             self._id = value
             return
 
-        raise AttributeError("ID can only be set once")
         logger.debug('function id_setter end')
+        raise AttributeError("ID can only be set once")
 
     @property
     def path(self):
@@ -127,7 +127,7 @@ class Image:
     def capture_image(cls):
         logger.debug('function capture_image start')
 
-        picam.capture("{}{}.jpg".format(path, id + 1))
+        picam.capture("{}{}.jpg".format(path, id))
 
-        logger.debug('function score end')
-        return cls(cv2.imread(path))
+        logger.debug('function capture_image end')
+        return cls(cv2.imread("{}{}.jpg".format(path, id)))

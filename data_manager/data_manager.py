@@ -18,7 +18,8 @@ class DataManager(object):
         self.img_path = img_path
 
         try:
-            self.conn = sqlite3.connect(self.db_name)
+            self.conn = sqlite3.connect(os.path.abspath(self.db_name))
+
         except Error as e:
             logger.critical('Cannot connect to db: {}'.format(format_exc()))
 
@@ -35,7 +36,7 @@ class DataManager(object):
         table = """CREATE TABLE IF NOT EXISTS sensor_data (
             id integer PRIMARY KEY,
             time timestamp NOT NULL,
-            img_name TEXT,
+            img_name INTEGER,
             img_score INTEGER,
             magnetometer_z REAL,
             magnetometer_y REAL,
@@ -55,7 +56,7 @@ class DataManager(object):
             return True
         except Exception as e:
             table_exists = "SELECT name FROM sqlite_master WHERE type='table' AND name='spwords'"
-            if conn.execute(table_exists).fetchone() and isinstance(e, sqlite3.OperationalError):
+            if self.conn.execute(table_exists).fetchone() and isinstance(e, sqlite3.OperationalError):
                 # sqlite3 docs say ProgrammingError is raised when table exists, although OperationalError was raised when testing.
                 logger.warning('Table already exists: {}'.format(format_exc()))
                 return True
@@ -82,8 +83,8 @@ class DataManager(object):
         """
         logger.debug('Function insert_data start')
 
-        sql = ''' INSERT INTO sensor_data(time,img_score,magnetometer_z,magnetometer_y,magnetometer_x)
-                VALUES(?,?,?,?,?) '''
+        sql = ''' INSERT INTO sensor_data(time,img_name,img_score,magnetometer_z,magnetometer_y,magnetometer_x)
+                VALUES(?,?,?,?,?,?) '''
 
         try:
             cur = self.conn.cursor()
@@ -121,15 +122,15 @@ class DataManager(object):
         logger.debug('Function get_bad_score end')
         return rows[0]
 
-    def delete_img(self, img_name):
+    def delete_img(self, img_id):
         """
         Delete img with img_name
-        :param img_name: Name of the img
+        :param img_id: Id of the img
         """
         logger.debug('Function delete_img start')
 
-        logger.info("Deleting img from: "+str(id)+", img_name: "+str(img_name))
-        os.remove(self.img_path+"/"+img_name)
+        logger.info("Deleting img: "+str(img_id))
+        os.remove(self.img_path+str(img_id)+".jpg")
 
         logger.debug('Function delete_img end')
 
