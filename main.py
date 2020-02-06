@@ -140,6 +140,8 @@ class main():
         print("Save to db")
         self.save_to_db(img.id, img.score, compass_list)
 
+        del compass_list, img
+
         if self.data_manager.storage_available() == False:
             print("Remove bad img")
             self.remove_bad_score_img()
