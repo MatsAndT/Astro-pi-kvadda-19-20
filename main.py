@@ -124,30 +124,28 @@ class main():
 
     def manager(self):
         logger.info('function manager start')
-        self.cycle += 1
-        print("On cycle: "+str(self.cycle))
 
-        if self.stop or self.stop_time <= datetime.utcnow():
-            self.data_manager.close()
-            return
+        while self.stop == False or self.stop_time >= datetime.utcnow():
+            self.cycle += 1
+            print("On cycle: "+str(self.cycle))
 
-        print("Getting compass")
-        compass_list = self.get_compass()
-        
-        print("Getting img")
-        img = self.get_img()
+            print("Getting compass")
+            compass_list = self.get_compass()
+            
+            print("Getting img")
+            img = self.get_img()
 
-        print("Save to db")
-        self.save_to_db(img.id, img.score, compass_list)
+            print("Save to db")
+            self.save_to_db(img.id, img.score, compass_list)
 
-        del compass_list, img
+            del compass_list, img
 
-        if self.data_manager.storage_available() == False:
-            print("Remove bad img")
-            self.remove_bad_score_img()
+            if self.data_manager.storage_available() == False:
+                print("Remove bad img")
+                self.remove_bad_score_img()
 
+        self.data_manager.close()
         logger.debug('function manager end')
-        self.manager()
 
 
 if __name__ == "__main__":
