@@ -160,11 +160,17 @@ class DataManager(object):
         max_size = 2.9*10**9
 
         try:
-            b = os.path.getsize(self.img_path+"../")
+            total_size = 0
+            total_size += os.path.getsize(self.db_name)
+            for dirpath, dirnames, filenames in os.walk(self.img_path):
+                for f in filenames:
+                    fp = os.path.join(dirpath, f)
+                    ##total_size += os.path.getsize(fp)
+                    total_size += (os.path.getsize(fp) if os.path.isfile(fp) else 0)
         except FileNotFoundError as e:
             logger.warning('Could not find image file: {}'.format(e))
         else:
-            if b > max_size:
+            if total_size > max_size:
                 logger.info("Storage available")
                 return False
             else:
