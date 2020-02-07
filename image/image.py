@@ -14,14 +14,15 @@ sleep(2)  # Pause to give the camera time to adjust
 
 id = 0
 
-# if the logging is imported the root will be file name
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
 class Image:
     _ndvi = None
     _score = None
     _id = None
+
+    # if the logging is imported the root will be file name
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)
 
     def __init__(self, image, id_=None):
         logger.info('Image init')

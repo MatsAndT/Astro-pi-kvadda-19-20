@@ -5,11 +5,12 @@ from datetime import datetime
 from sqlite3 import Error
 from traceback import format_exc
 
-# if the logging is imported the root will be file name
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
 class DataManager(object):
+    # if the logging is imported the root will be file name
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)
+
     def __init__(self, db_path, img_path):
         logger.info('Class DataManager init')
 
