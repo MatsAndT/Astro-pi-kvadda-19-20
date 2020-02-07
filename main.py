@@ -128,6 +128,7 @@ class main():
         while self.stop == False or self.stop_time >= datetime.utcnow():
             self.cycle += 1
             print("On cycle: "+str(self.cycle))
+            logger.info("On cycle"+str(self.cycle))
 
             print("Getting compass")
             compass_list = self.get_compass()
