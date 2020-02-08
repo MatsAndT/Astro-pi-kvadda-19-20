@@ -6,7 +6,10 @@ from datetime import datetime, timedelta
 from logging import handlers
 from traceback import format_exc
 
-from sense_hat import SenseHat
+try:
+    from sense_hat import SenseHat
+except ImportError: # Not on pi
+    pass
 
 from data_manager.data_manager import DataManager
 from image import image
@@ -58,8 +61,8 @@ class main():
         self.data_manager = DataManager(db_path, img_path)
         try:
             self.sense = SenseHat()
-        except OSError:
-            self.sense = __import__('blah').SenseHat()
+        except (OSError, NameError): # On pi without hat, or not testing on pi
+            self.sense = __import__('fake_sense').SenseHat()
 
         self.start_time = datetime.utcnow()
         self.stop_time = datetime.utcnow() + timedelta(hours=2, minutes=58)
