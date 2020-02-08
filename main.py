@@ -6,7 +6,10 @@ from datetime import datetime, timedelta
 from logging import handlers
 from traceback import format_exc
 
-from sense_hat import SenseHat
+try:
+    from sense_hat import SenseHat
+except ImportError: # Not on pi
+    pass
 
 from data_manager.data_manager import DataManager
 from image import image
@@ -39,13 +42,12 @@ handler.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
 
-class main():
+class main:
     stop = False
     cycle = 0
 
     def __init__(self):
         logger.info('main init')
-        super().__init__()
 
         atexit.register(self.stop_prosses) 
         signal.signal(signal.SIGTERM, self.stop_prosses)
@@ -56,13 +58,18 @@ class main():
             os.makedirs(img_path)
 
         self.data_manager = DataManager(db_path, img_path)
+
         try:
             self.sense = SenseHat()
-        except OSError:
-            self.sense = __import__('blah').SenseHat()
+        except (OSError, NameError): # On pi without hat, or not testing on pi
+            self.sense = __import__('fake_sense').SenseHat()
+            logger.warning('Running without sense-hat')
 
         self.start_time = datetime.utcnow()
         self.stop_time = datetime.utcnow() + timedelta(hours=2, minutes=58)
+
+        logger.info('Program will end on {}'.format(self.stop_time))
+
         self.data_manager.create_table()  # TODO: if false (error) return
 
         logger.debug('function main init end')
@@ -72,12 +79,12 @@ class main():
         for i in range(0, max_attempts):
             try:
                 # Get axes with z ["z"], y ["y"], x ["x"]
-                logger.info('Returned compass info')
+                logger.debug('Returned compass info')
                 return self.sense.get_compass_raw()
             except Exception as e:
                 logger.critical('Could not get compass data: {}'.format(format_exc()))
 
-        logger.debug('function __init__ end')
+        logger.debug('function get_compass end')
         return None
 
     def get_img(self):
