@@ -56,7 +56,10 @@ class main():
             os.makedirs(img_path)
 
         self.data_manager = DataManager(db_path, img_path)
-        self.sense = SenseHat()
+        try:
+            self.sense = SenseHat()
+        except OSError:
+            self.sense = __import__('blah').SenseHat()
 
         self.start_time = datetime.utcnow()
         self.stop_time = datetime.utcnow() + timedelta(hours=2, minutes=58)
