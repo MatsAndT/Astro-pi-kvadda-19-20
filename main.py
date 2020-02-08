@@ -1,7 +1,8 @@
+import atexit
 import logging
 import os
 import signal
-import atexit
+import sys
 from datetime import datetime, timedelta
 from logging import handlers
 from traceback import format_exc
@@ -32,14 +33,19 @@ formatter = logging.Formatter(
 
 # Creates a new log file every time it runs
 should_roll_over = os.path.isfile(filename)
-handler = logging.handlers.RotatingFileHandler(
-    filename, mode='w', backupCount=10)
+filehandler = logging.handlers.RotatingFileHandler(filename, mode='w', backupCount=10)
 if should_roll_over:  # log already exists, roll over!
-    handler.doRollover()
-handler.setFormatter(formatter)
-handler.setLevel(logging.DEBUG)
+    filehandler.doRollover()
+    
+filehandler.setFormatter(formatter)
+filehandler.setLevel(logging.DEBUG)
 
-logger.addHandler(handler)
+outputhandler = logging.StreamHandler(sys.stdout) # Log to console
+outputhandler.setFormatter(formatter)
+outputhandler.setLevel(logging.info)
+
+logger.addHandler(filehandler)
+logger.addHandler(outputhandler)
 
 
 class main:
