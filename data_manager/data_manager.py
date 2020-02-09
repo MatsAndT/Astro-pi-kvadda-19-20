@@ -4,12 +4,15 @@ import sqlite3
 from datetime import datetime
 from sqlite3 import Error
 from traceback import format_exc
+from time import sleep
 
 # if the logging is imported the root will be file name
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 class DataManager(object):
+    total_image_data_size = 0
+
     def __init__(self, db_path, img_path):
         logger.info('Class DataManager init')
 
@@ -159,26 +162,38 @@ class DataManager(object):
 
         max_size = 2.9*10**9
 
-        try:
-            total_size = 0
-            total_size += os.path.getsize(self.db_name)
-            for dirpath, dirnames, filenames in os.walk(self.img_path):
-                for f in filenames:
-                    fp = os.path.join(dirpath, f)
-                    ##total_size += os.path.getsize(fp)
-                    total_size += (os.path.getsize(fp) if os.path.isfile(fp) else 0)
-        except FileNotFoundError as e:
-            logger.warning('Could not find image file: {}'.format(e))
+        if self.total_image_data_size > max_size:
+            logger.info("Storage available")
+            return False
         else:
-            if total_size > max_size:
-                logger.info("Storage available")
-                return False
-            else:
-                logger.info("Storage not available")
-                return True
+            logger.info("Storage not available")
+            return True
 
         logger.debug('Function storage_available end')
 
+    def add_img_size(self, id):
+        """
+        Add the disk size off the image to total_image_data_size
+        :param id
+        """
+
+        try:
+            img_size = os.path.getsize("{}{}.jpg".format(self.img_path, id))
+        except FileNotFoundError as e:
+            logger.warning('Could not find image file: {}'.format(e))
+
+            try:
+                # Sleeps two seconds if the OS is late
+                sleep(2)
+
+                img_size = os.path.getsize("{}{}.jpg".format(self.img_path, id))
+            except FileNotFoundError as e:
+                logger.warning('Could not find image attempt two file: {}'.format(e))
+
+                img_size = 0
+        finally:
+            self.total_image_data_size += img_size        
+    
     def close(self):
         """
         Close the connection to the db

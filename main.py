@@ -149,6 +149,8 @@ class main:
             print("Save to db")
             self.save_to_db(img.id, img.score, compass_list)
 
+            self.data_manager.add_img_size(img.id)
+
             del compass_list, img
 
             if self.data_manager.storage_available() == False:
