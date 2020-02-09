@@ -164,7 +164,7 @@ class DataManager(object):
         # 0.1 GB test size
         max_size = 0.1*10**9
 
-        if self.total_image_data_size > max_size:
+        if self.total_image_data_size >= max_size:
             logger.info("Storage available")
             return False
         else:
