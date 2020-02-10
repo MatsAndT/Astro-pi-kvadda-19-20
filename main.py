@@ -162,6 +162,10 @@ class main:
                 print("Remove bad img")
                 self.remove_bad_score_img()
 
+            ## remove me
+            if self.cycle == 8:
+                break
+
         self.data_manager.close()
         logger.debug('function manager end')
 
