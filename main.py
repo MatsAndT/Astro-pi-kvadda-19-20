@@ -158,7 +158,7 @@ class main:
 
             del compass_list, img
 
-            if self.data_manager.storage_available() == True:
+            if self.data_manager.storage_available() == False:
                 print("Remove bad img")
                 self.remove_bad_score_img()
 

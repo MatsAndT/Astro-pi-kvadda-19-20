@@ -167,12 +167,12 @@ class DataManager(object):
         max_size = 1*10**9
 
         if self.total_image_data_size >= max_size:
-            logger.info("Storage available")
-            print("Storage available")
-            return False
-        else:
             logger.info("Storage not available")
             print("Storage not available")
+            return False
+        else:
+            logger.info("Storage available")
+            print("Storage available")
             return True
 
         logger.debug('Function storage_available end')
