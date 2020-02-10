@@ -120,11 +120,14 @@ class main:
             try:
                 bad_row = self.data_manager.get_bad_score()
                 print(bad_row)
-                self.data_manager.delete_img(bad_row["img_name"])
-                self.data_manager.delete_row(bad_row["id"])
+                print("bad id: "+str(bad_row[0]))
+                print("bad name: "+str(bad_row[1]))
+                self.data_manager.delete_img(bad_row[1])
+                self.data_manager.delete_row(bad_row[0])
 
             except Exception as e:
                 logger.critical('Could not remove image: {}'.format(format_exc()))
+                print("error bad: "+format_exc())
 
         logger.debug('function remove_bad_score start')
         return None
