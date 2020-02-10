@@ -149,7 +149,7 @@ class DataManager(object):
 
         logger.info("Deleting row with id: "+str(id))
         print("Deleting row with id: "+str(id))
-        cur.execute("DELETE FROM sensor_data WHERE id=?", (id))
+        cur.execute("DELETE FROM sensor_data WHERE id=?", (id,))
 
         self.conn.commit()
 
