@@ -152,7 +152,7 @@ class main:
             img = self.get_img()
 
             print("Save to db")
-            self.save_to_db(img.id+1, img.score, compass_list)
+            self.save_to_db(img.id, img.score, compass_list)
 
             self.data_manager.add_img_size(img.id)
 
