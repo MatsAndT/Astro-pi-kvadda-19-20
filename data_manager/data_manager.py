@@ -202,6 +202,31 @@ class DataManager(object):
             self.total_image_data_size += img_size
             print("total imge data: {}".format(self.total_image_data_size))
 
+    def remove_img_size(self, id):
+        """
+        Remove the disk size off the image to total_image_data_size
+        :param id
+        """
+
+        try:
+            img_size = os.path.getsize("{}{}.jpg".format(self.img_path, id))
+            print("img_size: {}".format(img_size))
+        except FileNotFoundError as e:
+            logger.warning('Could not find image file: {}'.format(e))
+
+            try:
+                # Sleeps two seconds if the OS is late
+                sleep(2)
+
+                img_size = os.path.getsize("{}{}.jpg".format(self.img_path, id))
+            except FileNotFoundError as e:
+                logger.warning('Could not find image attempt two file: {}'.format(e))
+
+                img_size = 0
+        finally:
+            self.total_image_data_size -= img_size
+            print("new total imge data: {}".format(self.total_image_data_size))
+
     def close(self):
         """
         Close the connection to the db
