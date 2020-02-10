@@ -15,8 +15,8 @@ from data_manager.data_manager import DataManager
 from image import image
 
 max_attempts = 3
-img_path = "./data/imgs/"
-db_path = "./data/database.sqlite"
+img_path = __file__+"/data/imgs/"
+db_path = __file__+"/data/database.sqlite"
 
 image.path = img_path
 
