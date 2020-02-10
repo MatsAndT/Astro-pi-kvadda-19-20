@@ -163,7 +163,7 @@ class main:
                 self.remove_bad_score_img()
 
             ## remove me
-            if self.cycle == 8:
+            if self.cycle == 2000:
                 break
 
         self.data_manager.close()
