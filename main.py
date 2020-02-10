@@ -49,7 +49,7 @@ class main:
     def __init__(self):
         logger.info('main init')
 
-        atexit.register(self.stop_prosses) 
+        atexit.register(self.stop_prosses)
         signal.signal(signal.SIGTERM, self.stop_prosses)
 
         # Test if the data and imgs path exist
@@ -66,7 +66,7 @@ class main:
             logger.warning('Running without sense-hat')
 
         self.start_time = datetime.utcnow()
-        self.stop_time = datetime.utcnow() + timedelta(hours=2, minutes=58)
+        self.stop_time = datetime.utcnow() + timedelta(seconds=15)
 
         logger.info('Program will end on {}'.format(self.stop_time))
 
@@ -119,6 +119,7 @@ class main:
         for i in range(0, max_attempts):
             try:
                 bad_row = self.data_manager.get_bad_score()
+                print(bad_row)
                 self.data_manager.delete_img(bad_row["img_name"])
                 self.data_manager.delete_row(bad_row["id"])
 
@@ -153,7 +154,7 @@ class main:
 
             del compass_list, img
 
-            if self.data_manager.storage_available() == False:
+            if self.data_manager.storage_available() == True:
                 print("Remove bad img")
                 self.remove_bad_score_img()
 
