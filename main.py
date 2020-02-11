@@ -67,7 +67,7 @@ class main:
             logger.warning('Running without sense-hat')
 
         self.start_time = datetime.utcnow()
-        self.stop_time = datetime.utcnow() + timedelta(seconds=15)
+        self.stop_time = datetime.utcnow() + timedelta(hours=2, seconds=58)
 
         logger.info('Program will end on {}'.format(self.stop_time))
 
@@ -162,10 +162,6 @@ class main:
             if self.data_manager.storage_available() == False:
                 print("Remove bad img")
                 self.remove_bad_score_img()
-
-            ## remove me
-            if self.cycle == 3000:
-                break
 
         self.data_manager.close()
         logger.debug('function manager end')
