@@ -127,6 +127,7 @@ class main:
                 bad_row = self.data_manager.get_bad_score()
                 self.data_manager.delete_img(bad_row["img_name"])
                 self.data_manager.delete_row(bad_row["id"])
+                return
 
             except Exception as e:
                 logger.critical('Could not remove image: {}'.format(format_exc()))
