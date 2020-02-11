@@ -72,7 +72,7 @@ class main:
             logger.warning('Running without sense-hat')
 
         self.start_time = datetime.utcnow()
-        self.stop_time = datetime.utcnow() + timedelta(hours=2, minutes=58)
+        self.stop_time = self.start_time + timedelta(hours=2, minutes=58)
 
         logger.info('Program will end on {}'.format(self.stop_time))
 
@@ -141,7 +141,7 @@ class main:
     def manager(self):
         logger.info('function manager start')
 
-        while not self.stop or self.stop_time >= datetime.utcnow():
+        while (not self.stop) or (self.stop_time > datetime.utcnow()):
             self.cycle += 1
             print("On cycle: "+str(self.cycle))
             logger.info("On cycle"+str(self.cycle))
