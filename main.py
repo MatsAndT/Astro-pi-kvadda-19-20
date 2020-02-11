@@ -141,7 +141,7 @@ class main:
     def manager(self):
         logger.info('function manager start')
 
-        while (not self.stop) or (self.stop_time > datetime.utcnow()):
+        while (not self.stop) and (self.stop_time > datetime.utcnow()):
             self.cycle += 1
             print("On cycle: "+str(self.cycle))
             logger.info("On cycle"+str(self.cycle))
