@@ -125,7 +125,7 @@ class main:
                 print("bad name: "+str(bad_row[1]))
                 self.data_manager.delete_img(bad_row[1])
                 self.data_manager.delete_row(bad_row[0])
-
+                break
             except Exception as e:
                 logger.critical('Could not remove image: {}'.format(format_exc()))
                 print("error bad: "+format_exc())
