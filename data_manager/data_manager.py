@@ -4,12 +4,15 @@ import sqlite3
 from datetime import datetime
 from sqlite3 import Error
 from traceback import format_exc
+from time import sleep
 
 # if the logging is imported the root will be file name
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 class DataManager(object):
+    total_image_data_size = 0
+
     def __init__(self, db_path, img_path):
         logger.info('Class DataManager init')
 
@@ -117,10 +120,10 @@ class DataManager(object):
             "SELECT id, img_name, img_score FROM sensor_data ORDER BY img_score ASC LIMIT 1")
 
         # Getting worst score
-        rows = cur.fetchall()
+        row = cur.fetchone()()
 
         logger.debug('Function get_bad_score end')
-        return rows[0]
+        return row
 
     def delete_img(self, img_id):
         """
@@ -130,6 +133,7 @@ class DataManager(object):
         logger.debug('Function delete_img start')
 
         logger.info("Deleting img: "+str(img_id))
+        print("Deleting img: "+self.img_path+str(img_id)+".jpg")
         os.remove(self.img_path+str(img_id)+".jpg")
 
         logger.debug('Function delete_img end')
@@ -144,7 +148,8 @@ class DataManager(object):
         cur = self.conn.cursor()
 
         logger.info("Deleting row with id: "+str(id))
-        cur.execute("DELETE FROM sensor_data WHERE id=?", (id))
+        print("Deleting row with id: "+str(id))
+        cur.execute("DELETE FROM sensor_data WHERE id=?", (id,))
 
         self.conn.commit()
 
@@ -157,21 +162,70 @@ class DataManager(object):
         """
         logger.debug('Function storage_available start')
 
-        max_size = 2.9*10**9
+        #max_size = 2.9*10**9
+        # 1 GB test size
+        max_size = 1*10**9
 
-        try:
-            b = os.path.getsize(self.img_path+"../")
-        except FileNotFoundError as e:
-            logger.warning('Could not find image file: {}'.format(e))
+        if self.total_image_data_size >= max_size:
+            logger.info("Storage not available")
+            print("Storage not available")
+            return False
         else:
-            if b > max_size:
-                logger.info("Storage available")
-                return False
-            else:
-                logger.info("Storage not available")
-                return True
+            logger.info("Storage available")
+            print("Storage available")
+            return True
 
         logger.debug('Function storage_available end')
+
+    def add_img_size(self, id):
+        """
+        Add the disk size off the image to total_image_data_size
+        :param id
+        """
+
+        try:
+            img_size = os.path.getsize("{}{}.jpg".format(self.img_path, id))
+            print("img_size: {}".format(img_size))
+        except FileNotFoundError as e:
+            logger.warning('Could not find image file: {}'.format(e))
+
+            try:
+                # Sleeps two seconds if the OS is late
+                sleep(2)
+
+                img_size = os.path.getsize("{}{}.jpg".format(self.img_path, id))
+            except FileNotFoundError as e:
+                logger.warning('Could not find image attempt two file: {}'.format(e))
+
+                img_size = 0
+        finally:
+            self.total_image_data_size += img_size
+            print("total imge data: {}".format(self.total_image_data_size))
+
+    def remove_img_size(self, id):
+        """
+        Remove the disk size off the image to total_image_data_size
+        :param id
+        """
+
+        try:
+            img_size = os.path.getsize("{}{}.jpg".format(self.img_path, id))
+            print("img_size: {}".format(img_size))
+        except FileNotFoundError as e:
+            logger.warning('Could not find image file: {}'.format(e))
+
+            try:
+                # Sleeps two seconds if the OS is late
+                sleep(2)
+
+                img_size = os.path.getsize("{}{}.jpg".format(self.img_path, id))
+            except FileNotFoundError as e:
+                logger.warning('Could not find image attempt two file: {}'.format(e))
+
+                img_size = 0
+        finally:
+            self.total_image_data_size -= img_size
+            print("new total imge data: {}".format(self.total_image_data_size))
 
     def close(self):
         """

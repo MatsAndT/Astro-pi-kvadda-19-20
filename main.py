@@ -16,8 +16,9 @@ from data_manager.data_manager import DataManager
 from image import image
 
 max_attempts = 3
-img_path = "./data/imgs/"
-db_path = "./data/database.sqlite"
+abs_path = os.path.abspath(__file__)[:-8]
+img_path = abs_path + "/data/imgs/"
+db_path = abs_path + "/data/database.sqlite"
 
 image.path = img_path
 
@@ -55,7 +56,7 @@ class main:
     def __init__(self):
         logger.info('main init')
 
-        atexit.register(self.stop_prosses) 
+        atexit.register(self.stop_prosses)
         signal.signal(signal.SIGTERM, self.stop_prosses)
 
         # Test if the data and imgs path exist
@@ -73,6 +74,7 @@ class main:
 
         self.start_time = datetime.utcnow()
         self.stop_time = self.start_time + timedelta(hours=2, minutes=58)
+
 
         logger.info('Program will end on {}'.format(self.stop_time))
 
@@ -125,12 +127,16 @@ class main:
         for i in range(0, max_attempts):
             try:
                 bad_row = self.data_manager.get_bad_score()
-                self.data_manager.delete_img(bad_row["img_name"])
-                self.data_manager.delete_row(bad_row["id"])
-                return
-
+                # 0 : id, 1 : img name
+                print("bad id: "+str(bad_row[0]))
+                print("bad name: "+str(bad_row[1]))
+                self.data_manager.delete_img(bad_row[1])
+                self.data_manager.remove_img_size(bad_row[1])
+                self.data_manager.delete_row(bad_row[0])
+                break
             except Exception as e:
                 logger.critical('Could not remove image: {}'.format(format_exc()))
+                print("error bad: "+format_exc())
 
         logger.debug('function remove_bad_score start')
         return None
@@ -155,6 +161,8 @@ class main:
 
             print("Save to db")
             self.save_to_db(img.id, img.score, compass_list)
+
+            self.data_manager.add_img_size(img.id)
 
             del compass_list, img
 
