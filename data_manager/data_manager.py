@@ -161,11 +161,10 @@ class DataManager(object):
         :return: False (less) or True (bigger)
         """
         logger.debug('Function storage_available start')
-
-        #max_size = 2.9*10**9
-        # 1 GB test size
-        max_size = 1*10**9
-
+        
+        # 2.9 GB
+        max_size = 2.9*10**9
+        
         if self.total_image_data_size >= max_size:
             logger.info("Storage not available")
             print("Storage not available")
