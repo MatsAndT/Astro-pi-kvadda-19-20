@@ -120,10 +120,10 @@ class DataManager(object):
             "SELECT id, img_name, img_score FROM sensor_data ORDER BY img_score ASC LIMIT 1")
 
         # Getting worst score
-        rows = cur.fetchall()
+        row = cur.fetchone()()
 
         logger.debug('Function get_bad_score end')
-        return rows[0]
+        return row
 
     def delete_img(self, img_id):
         """
