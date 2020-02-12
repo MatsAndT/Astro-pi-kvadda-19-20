@@ -43,7 +43,7 @@ filehandler.setLevel(logging.DEBUG)
 
 outputhandler = logging.StreamHandler(sys.stdout) # Log to console
 outputhandler.setFormatter(formatter)
-outputhandler.setLevel(logging.info)
+outputhandler.setLevel(logging.INFO)
 
 logger.addHandler(filehandler)
 logger.addHandler(outputhandler)
