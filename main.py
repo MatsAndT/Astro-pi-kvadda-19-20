@@ -120,6 +120,7 @@ class main:
         for i in range(0, max_attempts):
             try:
                 bad_row = self.data_manager.get_bad_score()
+                # 0 : id, 1 : img name
                 print("bad id: "+str(bad_row[0]))
                 print("bad name: "+str(bad_row[1]))
                 self.data_manager.delete_img(bad_row[1])
