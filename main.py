@@ -128,15 +128,13 @@ class main:
             try:
                 bad_row = self.data_manager.get_bad_score()
                 # 0 : id, 1 : img name
-                print("bad id: "+str(bad_row[0]))
-                print("bad name: "+str(bad_row[1]))
+                logger.info("Bad id: {}, Bad img name: {}".format(str(bad_row[0]), str(bad_row[1])))
                 self.data_manager.delete_img(bad_row[1])
                 self.data_manager.remove_img_size(bad_row[1])
                 self.data_manager.delete_row(bad_row[0])
                 break
             except Exception as e:
                 logger.critical('Could not remove image: {}'.format(format_exc()))
-                print("error bad: "+format_exc())
 
         logger.debug('function remove_bad_score start')
         return None
@@ -150,16 +148,15 @@ class main:
 
         while (not self.stop) and (self.stop_time > datetime.utcnow()):
             self.cycle += 1
-            print("On cycle: "+str(self.cycle))
             logger.info("On cycle"+str(self.cycle))
 
-            print("Getting compass")
+            logger.info("Getting compass")
             compass_list = self.get_compass()
             
-            print("Getting img")
+            logger.info("Getting img")
             img = self.get_img()
 
-            print("Save to db")
+            logger.info("Save to db")
             self.save_to_db(img.id, img.score, compass_list)
 
             self.data_manager.add_img_size(img.id)
@@ -167,7 +164,7 @@ class main:
             del compass_list, img
 
             if self.data_manager.storage_available() == False:
-                print("Remove bad img")
+                logger.info("Remove bad img")
                 self.remove_bad_score_img()
 
         self.data_manager.close()

@@ -133,7 +133,6 @@ class DataManager(object):
         logger.debug('Function delete_img start')
 
         logger.info("Deleting img: "+str(img_id))
-        print("Deleting img: "+self.img_path+str(img_id)+".jpg")
         os.remove(self.img_path+str(img_id)+".jpg")
 
         logger.debug('Function delete_img end')
@@ -167,11 +166,9 @@ class DataManager(object):
         
         if self.total_image_data_size >= max_size:
             logger.info("Storage not available")
-            print("Storage not available")
             return False
         else:
             logger.info("Storage available")
-            print("Storage available")
             return True
 
         logger.debug('Function storage_available end')
@@ -184,7 +181,7 @@ class DataManager(object):
 
         try:
             img_size = os.path.getsize("{}{}.jpg".format(self.img_path, id))
-            print("img_size: {}".format(img_size))
+            logger.debug("img_size: {}".format(img_size))
         except FileNotFoundError as e:
             logger.warning('Could not find image file: {}'.format(e))
 
@@ -199,7 +196,7 @@ class DataManager(object):
                 img_size = 0
         finally:
             self.total_image_data_size += img_size
-            print("total imge data: {}".format(self.total_image_data_size))
+            logger.debug("total imge data: {}".format(self.total_image_data_size))
 
     def remove_img_size(self, id):
         """
@@ -209,7 +206,7 @@ class DataManager(object):
 
         try:
             img_size = os.path.getsize("{}{}.jpg".format(self.img_path, id))
-            print("img_size: {}".format(img_size))
+            logger.debug("img_size: {}".format(img_size))
         except FileNotFoundError as e:
             logger.warning('Could not find image file: {}'.format(e))
 
@@ -224,7 +221,7 @@ class DataManager(object):
                 img_size = 0
         finally:
             self.total_image_data_size -= img_size
-            print("new total imge data: {}".format(self.total_image_data_size))
+            logger.debug("New total imge data: {}".format(self.total_image_data_size))
 
     def close(self):
         """
