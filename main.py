@@ -129,8 +129,8 @@ class main:
                 bad_row = self.data_manager.get_bad_score()
                 # 0 : id, 1 : img name
                 logger.info("Bad id: {}, Bad img name: {}".format(str(bad_row[0]), str(bad_row[1])))
-                self.data_manager.delete_img(bad_row[1])
                 self.data_manager.remove_img_size(bad_row[1])
+                self.data_manager.delete_img(bad_row[1])
                 self.data_manager.delete_row(bad_row[0])
                 break
             except Exception as e:
