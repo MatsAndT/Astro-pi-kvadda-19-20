@@ -148,6 +148,12 @@ class main:
         while (not self.stop) and (self.stop_time > datetime.utcnow()):
             self.cycle += 1
             self.sense.show_message(str(self.cycle))
+
+            # Make sure light from the matrix does not interfere with anything
+            while max(self.sense.get_pixels()) != [0, 0, 0]:
+                logger.info('Showing cycle number on led matrix')
+                sleep(1) 
+
             logger.info("On cycle"+str(self.cycle))
 
             logger.info("Getting compass")
