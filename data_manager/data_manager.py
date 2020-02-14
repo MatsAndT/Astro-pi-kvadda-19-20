@@ -3,19 +3,17 @@ import os
 import sqlite3
 from datetime import datetime
 from sqlite3 import Error
-from traceback import format_exc
 from time import sleep
+from traceback import format_exc
 
-# if the logging is imported the root will be file name
 logger = logging.getLogger('astro')
 
-class DataManager(object):
+class DataManager:
     total_image_data_size = 0
 
     def __init__(self, db_path, img_path):
         logger.info('Class DataManager init')
 
-        super().__init__()
         self.db_name = db_path
         self.img_path = img_path
 

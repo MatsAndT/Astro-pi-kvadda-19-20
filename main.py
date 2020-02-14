@@ -16,14 +16,19 @@ except ImportError: # Not on pi
 from data_manager.data_manager import DataManager
 from image import image
 
+# Some constants
+
 max_attempts = 3
-abs_path = os.path.abspath(__file__)[:-8]
-img_path = abs_path + "/data/imgs/"
-db_path = abs_path + "/data/database.sqlite"
+
+img_path = "./data/imgs/"
+db_path = "./data/database.sqlite"
 
 image.path = img_path
 
-filename = "log.log"
+log_filename = "astro.log"
+
+
+# Logging setup
 
 logger = logging.getLogger('astro')
 logger.setLevel(logging.DEBUG)
@@ -33,15 +38,16 @@ formatter = logging.Formatter(
     '%(levelname)s:%(asctime)s:%(filename)s:%(funcName)s:%(message)s')
 
 # Creates a new log file every time it runs
-should_roll_over = os.path.isfile(filename)
-filehandler = logging.handlers.RotatingFileHandler(filename, mode='w', backupCount=10)
+should_roll_over = os.path.isfile(log_filename)
+filehandler = logging.handlers.RotatingFileHandler(log_filename, mode='w', backupCount=10)
 if should_roll_over:  # log already exists, roll over!
     filehandler.doRollover()
     
 filehandler.setFormatter(formatter)
 filehandler.setLevel(logging.DEBUG)
 
-outputhandler = logging.StreamHandler(sys.stdout) # Log to console
+# Log to console
+outputhandler = logging.StreamHandler(sys.stdout) 
 outputhandler.setFormatter(formatter)
 outputhandler.setLevel(logging.INFO)
 
@@ -80,7 +86,10 @@ class main:
 
         self.data_manager.create_table()  # TODO: if false (error) return
 
-        logger.debug('function main init end')
+        logger.debug('function main init end, starting manager')
+
+        # Start main loop
+        self.manager()
 
     def get_compass(self):
         logger.debug('function get_compass start')
@@ -144,13 +153,15 @@ class main:
         self.stop = True
 
     def manager(self):
+        '''Main loop function'''
+
         logger.info('function manager start')
 
         while (not self.stop) and (self.stop_time > datetime.utcnow()):
             self.cycle += 1
             self.sense.show_message(str(self.cycle))
 
-            logger.info("On cycle"+str(self.cycle))
+            logger.info("On cycle "+str(self.cycle))
 
             logger.info("Getting compass")
             compass_list = self.get_compass()
@@ -161,9 +172,9 @@ class main:
             logger.info("Save to db")
             self.save_to_db(img.id, img.score, compass_list)
 
-            self.data_manager.add_img_size(img.id)
+            self.data_manager.add_img_size(img.id) # Tracks file size
 
-            del compass_list, img
+            del compass_list, img # free memory
 
             while not self.data_manager.storage_available():
                 logger.info("Remove bad img")
@@ -174,4 +185,4 @@ class main:
 
 
 if __name__ == "__main__":
-    main().manager()
+    main()

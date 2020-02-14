@@ -14,7 +14,6 @@ sleep(2)  # Pause to give the camera time to adjust
 
 id = 0
 
-# if the logging is imported the root will be file name
 logger = logging.getLogger('astro')
 
 class Image:
@@ -47,6 +46,7 @@ class Image:
         """
         logger.debug('function ndvi start')
 
+        # Check if result has been stored earlier
         if self._ndvi is not None:
             return self._ndvi
 
@@ -59,7 +59,7 @@ class Image:
 
         top = near_ir.astype(float) - blue.astype(float)
 
-        self._ndvi = top / bottom
+        self._ndvi = top / bottom # Store result
 
         logger.debug('function ndvi end')
         return self._ndvi
@@ -80,7 +80,7 @@ class Image:
             self.original, cv2.COLOR_BGR2GRAY))[0]
         ndvi_average = cv2.mean(self.ndvi)[0]
 
-        # TODO: log brightness and average ndvi for debug
+        logger.debug('Image brightness: {}, ndvi_average: {}'.format(brightness, ndvi_average))
 
         score = round(brightness)
 
@@ -91,7 +91,7 @@ class Image:
             score = round(score / 4)
 
         logger.debug('function score end')
-        return max(0, score)
+        return max(0, score) # return positive score
 
     @property
     def id(self):
@@ -114,13 +114,15 @@ class Image:
 
     @property
     def path(self):
+        '''Returns the absolute path of the image'''
         logger.debug('function path start and end')
         return os.path.abspath("{}{}.jpg".format(path, self.id))
 
     @property
     def name(self):
+        '''Returns the image name'''
         logger.debug('function name start and end')
-        return "{self.id}.jpg"
+        return "{}.jpg".format(self.id)
 
     @classmethod
     def capture_image(cls):
