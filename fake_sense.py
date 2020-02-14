@@ -9,3 +9,6 @@ class SenseHat:
 
     def get_compass_raw(self):
         return {"x": 0, "y": 0, "z": 0}
+
+    def show_message(self, *args, **kwargs):
+        pass

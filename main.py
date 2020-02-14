@@ -147,6 +147,7 @@ class main:
 
         while (not self.stop) and (self.stop_time > datetime.utcnow()):
             self.cycle += 1
+            self.sense.show_message(str(self.cycle))
             logger.info("On cycle"+str(self.cycle))
 
             logger.info("Getting compass")
