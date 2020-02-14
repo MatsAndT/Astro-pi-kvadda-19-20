@@ -150,6 +150,10 @@ class main:
             self.sense.show_message(str(self.cycle))
 
             # Make sure light from the matrix does not interfere with anything
+            while max(self.sense.get_pixels()) == [0, 0, 0]:
+                logger.info('Waiting for lights to turn on')
+                sleep(1)
+
             while max(self.sense.get_pixels()) != [0, 0, 0]:
                 logger.info('Showing cycle number on led matrix')
                 sleep(1) 
