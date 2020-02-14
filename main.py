@@ -29,7 +29,7 @@ logger.setLevel(logging.DEBUG)
 
 # How the logs are going to look
 formatter = logging.Formatter(
-    '%(levelname)s:%(asctime)s:%(name)s:%(funcName)s:%(message)s')
+    '%(levelname)s:%(asctime)s:%(filename)s:%(funcName)s:%(message)s')
 
 # Creates a new log file every time it runs
 should_roll_over = os.path.isfile(filename)
