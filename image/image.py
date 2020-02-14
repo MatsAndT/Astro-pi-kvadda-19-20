@@ -15,8 +15,7 @@ sleep(2)  # Pause to give the camera time to adjust
 id = 0
 
 # if the logging is imported the root will be file name
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger = logging.getLogger('astro')
 
 class Image:
     _ndvi = None

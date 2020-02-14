@@ -7,8 +7,7 @@ from traceback import format_exc
 from time import sleep
 
 # if the logging is imported the root will be file name
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger = logging.getLogger('astro')
 
 class DataManager(object):
     total_image_data_size = 0

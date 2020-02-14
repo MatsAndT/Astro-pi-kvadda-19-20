@@ -24,8 +24,7 @@ image.path = img_path
 
 filename = "log.log"
 
-# if the logging is imported the root will be file name
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('astro')
 logger.setLevel(logging.DEBUG)
 
 # How the logs are going to look
