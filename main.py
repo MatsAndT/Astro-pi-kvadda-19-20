@@ -62,8 +62,8 @@ class main:
     def __init__(self):
         logger.info('main init')
 
-        atexit.register(self.stop_prosses)
-        signal.signal(signal.SIGTERM, self.stop_prosses)
+        atexit.register(self.stop_process)
+        signal.signal(signal.SIGTERM, self.stop_process)
 
         # Test if the data and imgs path exist
         if not os.path.exists(img_path):
@@ -148,8 +148,8 @@ class main:
         logger.debug('function remove_bad_score start')
         return None
 
-    def stop_prosses(self):
-        logger.info('function stop_prosess start')
+    def stop_process(self):
+        logger.info('function stop_process start')
         self.stop = True
 
     def manager(self):
