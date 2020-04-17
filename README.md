@@ -1,4 +1,5 @@
 # Astro-pi-kvadda
+[![CodeFactor](https://www.codefactor.io/repository/github/matsandt/astro-pi-kvadda/badge)](https://www.codefactor.io/repository/github/matsandt/astro-pi-kvadda)
 ## Mission
 - Measure the vegetation on different spots on Earth in the ISS flight path, and try to - calculate the carbon dioxide from the vegetation. 
 - Then if possible, compare these data with previously collected data. 
