@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.options import Options
 
 date = ephem.Date('')
 
-class TimeToPosition:
+class TimeToLatLon:
     url = "http://www.isstracker.com/historical"
 
     def __init__(self):
