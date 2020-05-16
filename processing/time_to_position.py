@@ -16,16 +16,17 @@ class TimeToPosition:
         self.driver.get(self.url)
 
     def convert(self, time):
+        if time == None or time == "" or time != str:
+            raise ValueError('Time is required and must be a string')
+
         self.search(time)
         lat, lon = self.get_lat_lon()
 
         if lat == '' or lat == None:
-            # TODO: add error for not lat
-            return Error
+            raise SyntaxError('Did not find latitudeValue, is the time correct?') 
         else:
             if lon == '' or lon == None:
-                #TODO: add error for not lon
-                return Error
+                raise SyntaxError('Did not find longitudeValue, is the time correct?')
             else:
                 return lat, lon
 
