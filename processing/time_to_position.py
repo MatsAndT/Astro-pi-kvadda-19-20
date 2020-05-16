@@ -31,8 +31,9 @@ class TimeToPosition:
 
     def search(self, time_text):
         search_form = self.driver.find_element_by_id('historicalDateTime')
+        search_form.clear()
         search_form.send_keys(time_text)
-        search_form.submit()
+        self.driver.find_element_by_id('submitLookup').click()
 
     def get_lat_lon(self):
         lat = self.driver.find_element_by_id('latitudeValue').text
