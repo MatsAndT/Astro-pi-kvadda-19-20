@@ -9,7 +9,7 @@ class DataBase:
         super().__init__()
 
         try:
-            self.conn = sqlite3.connect(os.path.abspath(self.db_name))
+            self.conn = sqlite3.connect(os.path.abspath(db_path))
         except Error as e:
             raise SyntaxError(e)
 
