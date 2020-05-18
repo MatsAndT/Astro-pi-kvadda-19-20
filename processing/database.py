@@ -14,7 +14,13 @@ class DataBase:
             raise SyntaxError(e)
 
     def next(self):
-        pass
+        """
+        Returns the next row of data to be prossest
+        """
+
+        row = self.conn.cursor().fetchone()[self.line]
+        self.line += 1
+        return row
 
     def get_data(self):
         pass
