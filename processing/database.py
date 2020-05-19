@@ -19,6 +19,13 @@ class DataBase:
         cur.execute('alter table sensor_data add column country string')
         self.conn.commit()
     
+    def update_place(self, id, town, country):
+        sql = 'UPDATE sensor_data SET town = ?, country = ? WHERE id = ?'
+        
+        cur = self.conn.cursor()
+        cur.execute(sql, (town,country,id))
+        self.conn.commit()
+
     def next(self):
         """
         Returns the next row of data to be prossest
