@@ -15,8 +15,7 @@ def main(folder, db):
     while True:
         row = db_handeler.next()
         lat, lon = ttp.convert(row['time']+time_zone)
-
-        address = to_address(lat, lon)
+        
         town, country = getplace(lat, lon)
 
 ### https://stackoverflow.com/a/20169528/7419883
