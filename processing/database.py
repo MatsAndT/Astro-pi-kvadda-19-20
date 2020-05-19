@@ -13,6 +13,12 @@ class DataBase:
         except Error as e:
             raise SyntaxError(e)
 
+    def add_colum(self):
+        cur = self.conn.cursor()
+        cur.execute('alter table sensor_data add column town string')
+        cur.execute('alter table sensor_data add column country string')
+        self.conn.commit()
+    
     def next(self):
         """
         Returns the next row of data to be prossest
