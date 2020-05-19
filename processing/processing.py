@@ -1,5 +1,8 @@
 import argparse
 
+db_path = '../data/teamkvadda_data_database.sqlite'
+time_zone = '+0000'
+
 def main(folder, db):
     pass
 
