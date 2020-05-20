@@ -6,10 +6,11 @@ from urllib import urlopen
 import json
 
 db_path = '../data/teamkvadda_data_database.sqlite'
+csv_path = '../data/co2_2018.csv'
 time_zone = '+0000'
 
 def main(folder, db):
-    db_handeler = Data(db_path)
+    db_handeler = Data(db_path, csv_path)
     ttp = TimeToLatLon()
 
     while True:

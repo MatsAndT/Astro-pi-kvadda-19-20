@@ -1,17 +1,36 @@
 import os
 import sqlite3
 from sqlite3 import Error
+import csv
 
 class Data:
     line = 0
+    co2 = {}
 
-    def __init__(self, db_path):
+    def __init__(self, db_path, csv_path):
         super().__init__()
+
+        self.init_co2(csv_path)
 
         try:
             self.conn = sqlite3.connect(os.path.abspath(db_path))
         except Error as e:
             raise SyntaxError(e)
+
+    def init_co2(self, path):
+        '''
+        Sets up the co2 map, with data from the csv
+        '''
+        with open(path) as csvfile:
+            readCSV = csv.reader(csvfile, delimiter=',')
+            countrys = readCSV[0]
+            co2s = readCSV[1]
+
+            for i in range(countrys):
+                self.co2[countrys[i]] = co2s[i]
+
+            print(self.co2)
+            
 
     def add_colum(self):
         '''
