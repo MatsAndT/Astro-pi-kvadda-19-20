@@ -30,7 +30,9 @@ class Data:
                 self.co2[countrys[i]] = co2s[i]
 
             print(self.co2)
-            
+    
+    def get_co2(self, country):
+        return self.co2.get(country)
 
     def add_colum(self):
         '''
