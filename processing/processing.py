@@ -1,5 +1,5 @@
 import argparse
-from database import DataBase
+from data import Data
 from time_to_position import TimeToLatLon
 
 from urllib import urlopen
@@ -9,13 +9,13 @@ db_path = '../data/teamkvadda_data_database.sqlite'
 time_zone = '+0000'
 
 def main(folder, db):
-    db_handeler = DataBase(db_path)
+    db_handeler = Data(db_path)
     ttp = TimeToLatLon()
 
     while True:
         row = db_handeler.next()
         lat, lon = ttp.convert(row['time']+time_zone)
-        
+
         town, country = getplace(lat, lon)
 
 ### https://stackoverflow.com/a/20169528/7419883

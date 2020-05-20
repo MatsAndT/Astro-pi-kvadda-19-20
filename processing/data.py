@@ -2,7 +2,7 @@ import os
 import sqlite3
 from sqlite3 import Error
 
-class DataBase:
+class Data:
     line = 0
 
     def __init__(self, db_path):
