@@ -14,9 +14,16 @@ class DataBase:
             raise SyntaxError(e)
 
     def add_colum(self):
+        '''
+        Add three column to the databse
+        town : string
+        county : string
+        cotwo : string, it is for the co2 from the sheet
+        '''
         cur = self.conn.cursor()
         cur.execute('alter table sensor_data add column town string')
         cur.execute('alter table sensor_data add column country string')
+        cur.execute('alter table sensor_data add column cotwo string')
         self.conn.commit()
     
     def update_place(self, id, town, country):
