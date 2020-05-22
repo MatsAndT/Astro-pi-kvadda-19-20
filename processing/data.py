@@ -45,6 +45,8 @@ class Data:
         cur.execute('alter table sensor_data add column town string')
         cur.execute('alter table sensor_data add column country string')
         cur.execute('alter table sensor_data add column cotwo string')
+        cur.execute('alter table sensor_data add column lat string')
+        cur.execute('alter table sensor_data add column lon string')
         self.conn.commit()
     
     def update_place(self, id, town, country):
