@@ -36,10 +36,12 @@ class Data:
 
     def add_colum(self):
         '''
-        Add three column to the databse
+        Add five column to the databse
         town : string
         county : string
         cotwo : string, it is for the co2 from the sheet
+        lat : string
+        lon : string
         '''
         cur = self.conn.cursor()
         cur.execute('alter table sensor_data add column town string')
@@ -50,6 +52,9 @@ class Data:
         self.conn.commit()
     
     def add_data(self, id, town, country, co2, lat, lon):
+        '''
+        Adds new data from internett to database
+        '''
         sql = 'UPDATE sensor_data SET town = ?, country = ?, cotwo = ?, lat = ?, lon = ? WHERE id = ?'
         
         cur = self.conn.cursor()
