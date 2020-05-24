@@ -5,13 +5,10 @@ from time_to_position import TimeToLatLon
 from urllib.request import urlopen
 import json
 
-row_length = 709
-db_path = '../data/teamkvadda_data_database.sqlite'
-csv_path = '../data/co2_2018.csv'
 time_zone = '+0000'
 
-def main(folder, db):
-    data_handeler = Data(db_path, csv_path)
+def main(folder, db, row_length, csv_path):
+    data_handeler = Data(db, csv_path)
     data_handeler.add_colum()
     ttp = TimeToLatLon()
 
@@ -55,7 +52,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process some iss data.')
     parser.add_argument('pictures', type=str,
                         help='path where the pictures are')
-    parser.add_argument('db', dest='accumulate', type=str, help='path to db')
+    parser.add_argument('db', type=str, help='path to db')
+    parser.add_argument('row_length', help='row length', type=int)
+    parser.add_argument('csv_path', help='path for co2 data', type=str)
     args = parser.parse_args()
 
-    main(args.fodler, args.db)
+    main(args.fodler, args.db, args.row_lenght, args.csv_path)
