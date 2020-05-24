@@ -72,5 +72,3 @@ class Data:
 
     def close_conn(self):
         self.conn.close()
-
-    
