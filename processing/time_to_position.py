@@ -26,12 +26,12 @@ class TimeToLatLon:
         lat, lon = self.get_lat_lon()
 
         if lat is '' or lat is None:
-            raise SyntaxError('Did not find latitudeValue, is the time correct?') 
-        else:
-            if lon is '' or lon is None:
-                raise SyntaxError('Did not find longitudeValue, is the time correct?')
-            else:
-                return lat, lon
+            raise SyntaxError('Did not find latitudeValue, is the time correct?')
+
+        if lon is '' or lon is None:
+            raise SyntaxError('Did not find longitudeValue, is the time correct?')
+
+        return lat, lon
 
     def search(self, time_text):
         '''
