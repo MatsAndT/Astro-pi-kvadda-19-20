@@ -51,14 +51,14 @@ class Data:
         cur.execute('alter table sensor_data add column lon string')
         self.conn.commit()
     
-    def add_data(self, id, town, country, co2, lat, lon):
+    def add_data(self, _id, town, country, co2, lat, lon):
         '''
         Adds new data from internett to database
         '''
         sql = 'UPDATE sensor_data SET town = ?, country = ?, cotwo = ?, lat = ?, lon = ? WHERE id = ?'
         
         cur = self.conn.cursor()
-        cur.execute(sql, (town,country,co2,lat,lon,id))
+        cur.execute(sql, (town,country,co2,lat,lon,_id))
         self.conn.commit()
 
     def next(self):
