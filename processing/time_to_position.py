@@ -2,14 +2,12 @@ import ephem
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-date = ephem.Date('')
 
 class TimeToLatLon:
     url = "http://www.isstracker.com/historical"
 
     def __init__(self):
         chrome_options = Options()
-        #chrome_options.add_argument("--headless")
         chrome_options.add_argument('--window-size=1280x720')
         
         self.driver = webdriver.Chrome(chrome_options=chrome_options)
@@ -36,18 +34,14 @@ class TimeToLatLon:
         return lat, lon
 
     def search(self, time_text):
-        '''
-        Search for the time we are looking for 
-        '''
+        ''' Search for the time we are looking for '''
         search_form = self.driver.find_element_by_id('historicalDateTime')
         search_form.clear()
         search_form.send_keys(time_text)
         self.driver.find_element_by_id('submitLookup').click()
 
     def get_lat_lon(self):
-        '''
-        Gets lat and lon from the html
-        '''
+        ''' Gets lat and lon from the html '''
         lat = self.driver.find_element_by_id('latitudeValue').text
         lon = self.driver.find_element_by_id('longitudeValue').text
         return lat, lon
