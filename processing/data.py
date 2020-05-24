@@ -34,7 +34,7 @@ class Data:
     def get_co2(self, country):
         return self.co2.get(country)
 
-    def add_colum(self):
+    def add_column(self):
         '''
         Add five column to the databse
         town : string

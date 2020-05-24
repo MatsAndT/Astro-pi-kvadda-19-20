@@ -8,25 +8,25 @@ import json
 time_zone = '+0000'
 
 def main(folder, db, row_length, csv_path):
-    data_handeler = Data(db, csv_path)
-    data_handeler.add_colum()
+    data_handler = Data(db, csv_path)
+    data_handler.add_column()
     ttp = TimeToLatLon()
 
     for i in range(row_length):
         print('processing row %x' % i)
-        row = data_handeler.next()
+        row = data_handler.next()
         lat, lon = ttp.convert(row['time']+time_zone)
         print('lat: %s, lon: %s' % (lat, lon))
         town, country = getplace(lat, lon)
         print('town: %s, country: %s' % (town, country))
-        co2 = data_handeler.get_co2(country)
+        co2 = data_handler.get_co2(country)
         print('co2: %s' % co2)
         
-        data_handeler.add_data(row['id'], town, country, co2, lat, lon)
+        data_handler.add_data(row['id'], town, country, co2, lat, lon)
         print('added new data to database')
         print('\n\n')
 
-    data_handeler.close_conn()
+    data_handler.close_conn()
     ttp.quit()
 
 
