@@ -2,7 +2,7 @@ import argparse
 from data import Data
 from time_to_position import TimeToLatLon
 
-from urllib.request import urlopen
+import requests
 import json
 
 time_zone = '+0000'
@@ -37,7 +37,7 @@ def getplace(lat, lon):
     '''
     url = "http://maps.googleapis.com/maps/api/geocode/json?"
     url += "latlng=%s,%s&sensor=false" % (lat, lon)
-    v = urlopen(url).read()
+    v = requests.get(url)
     j = json.loads(v)
     components = j['results'][0]['address_components']
     country = town = None
