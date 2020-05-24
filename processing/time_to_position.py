@@ -16,6 +16,9 @@ class TimeToLatLon:
         self.driver.get(self.url)
 
     def convert(self, time):
+        '''
+        Converts time to the position of the iss, in lat and lon
+        '''
         if time == None or time == "" or time != str:
             raise ValueError('Time is required and must be a string')
 
@@ -31,12 +34,18 @@ class TimeToLatLon:
                 return lat, lon
 
     def search(self, time_text):
+        '''
+        Search for the time we are looking for 
+        '''
         search_form = self.driver.find_element_by_id('historicalDateTime')
         search_form.clear()
         search_form.send_keys(time_text)
         self.driver.find_element_by_id('submitLookup').click()
 
     def get_lat_lon(self):
+        '''
+        Gets lat and lon from the html
+        '''
         lat = self.driver.find_element_by_id('latitudeValue').text
         lon = self.driver.find_element_by_id('longitudeValue').text
         return lat, lon
