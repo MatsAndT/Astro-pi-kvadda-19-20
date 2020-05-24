@@ -35,6 +35,9 @@ def main(folder, db):
 
 ### https://stackoverflow.com/a/20169528/7419883
 def getplace(lat, lon):
+    '''
+    Convert lat and lon to a place on the map with town and country
+    '''
     url = "http://maps.googleapis.com/maps/api/geocode/json?"
     url += "latlng=%s,%s&sensor=false" % (lat, lon)
     v = urlopen(url).read()
