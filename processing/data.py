@@ -24,7 +24,7 @@ class Data:
             readCSV = csv.reader(csvfile, delimiter=',')
             countrys = readCSV[0]
             co2s = readCSV[1]
-
+            
             for i in range(countrys):
                 self.co2[countrys[i]] = co2s[i]
 
@@ -59,7 +59,7 @@ class Data:
         self.conn.commit()
 
     def next(self):
-        """ Returns the next row of data to be prossest """
+        ''' Returns the next row of data to be prossest '''
 
         row = self.conn.cursor().fetchone()[self.line]
         self.line += 1

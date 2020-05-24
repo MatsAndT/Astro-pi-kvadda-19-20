@@ -14,14 +14,11 @@ class TimeToLatLon:
         self.driver.get(self.url)
 
     def convert(self, time):
-        '''
-        Converts time to the position of the iss, in lat and lon
-        '''
+        ''' Converts time to the position of the iss, in lat and lon '''
         if not isinstance(time, str):
             raise TypeError('Time must be a string.')
         if not time:
             raise ValueError('Time cannot be an empty string.')
-
         self.search(time)
         lat, lon = self.get_lat_lon()
 

@@ -29,7 +29,6 @@ def main(folder, db, row_length, csv_path):
     data_handler.close_conn()
     ttp.quit()
 
-
 # https://stackoverflow.com/a/20169528/7419883
 def getplace(lat, lon):
     ''' Convert lat and lon to a place on the map with town and country '''
