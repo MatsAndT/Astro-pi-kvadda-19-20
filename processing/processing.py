@@ -2,7 +2,7 @@ import argparse
 from data import Data
 from time_to_position import TimeToLatLon
 
-from urllib import urlopen
+from urllib.request import urlopen
 import json
 
 db_path = '../data/teamkvadda_data_database.sqlite'
