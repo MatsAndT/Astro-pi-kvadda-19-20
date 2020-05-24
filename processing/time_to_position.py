@@ -19,16 +19,16 @@ class TimeToLatLon:
         '''
         Converts time to the position of the iss, in lat and lon
         '''
-        if time is None or time is "" or time is not str:
+        if time is None or time == "" or time is not str:
             raise ValueError('Time is required and must be a string')
 
         self.search(time)
         lat, lon = self.get_lat_lon()
 
-        if lat is '' or lat is None:
+        if lat == '' or lat is None:
             raise SyntaxError('Did not find latitudeValue, is the time correct?')
 
-        if lon is '' or lon is None:
+        if lon == '' or lon is None:
             raise SyntaxError('Did not find longitudeValue, is the time correct?')
 
         return lat, lon
