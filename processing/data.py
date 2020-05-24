@@ -65,7 +65,7 @@ class Data:
         self.line += 1
         return row
 
-    def get_data(self):
-        pass
+    def close_conn(self):
+        self.conn.close()
 
     
