@@ -1,13 +1,14 @@
 import argparse
 from data import Data
 from time_to_position import TimeToLatLon
-
 import requests
 import json
 
 time_zone = '+0000'
 
+
 def main(folder, db, row_length, csv_path):
+    ''' Main function of processing '''
     data_handeler = Data(db, csv_path)
     data_handeler.add_colum()
     ttp = TimeToLatLon()
@@ -30,11 +31,9 @@ def main(folder, db, row_length, csv_path):
     ttp.quit()
 
 
-### https://stackoverflow.com/a/20169528/7419883
+# https://stackoverflow.com/a/20169528/7419883
 def getplace(lat, lon):
-    '''
-    Convert lat and lon to a place on the map with town and country
-    '''
+    ''' Convert lat and lon to a place on the map with town and country '''
     url = "http://maps.googleapis.com/maps/api/geocode/json?"
     url += "latlng=%s,%s&sensor=false" % (lat, lon)
     v = requests.get(url)

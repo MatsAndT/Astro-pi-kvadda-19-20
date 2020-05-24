@@ -3,6 +3,7 @@ import sqlite3
 from sqlite3 import Error
 import csv
 
+
 class Data:
     line = 0
     co2 = {}
@@ -18,9 +19,7 @@ class Data:
             raise SyntaxError(e)
 
     def init_co2(self, path):
-        '''
-        Sets up the co2 map, with data from the csv
-        '''
+        ''' Sets up the co2 map, with data from the csv '''
         with open(path) as csvfile:
             readCSV = csv.reader(csvfile, delimiter=',')
             countrys = readCSV[0]
@@ -52,19 +51,15 @@ class Data:
         self.conn.commit()
     
     def add_data(self, _id, town, country, co2, lat, lon):
-        '''
-        Adds new data from internett to database
-        '''
+        ''' Adds new data from internett to database '''
         sql = 'UPDATE sensor_data SET town = ?, country = ?, cotwo = ?, lat = ?, lon = ? WHERE id = ?'
         
         cur = self.conn.cursor()
-        cur.execute(sql, (town,country,co2,lat,lon,_id))
+        cur.execute(sql, (town, country, co2, lat, lon, _id))
         self.conn.commit()
 
     def next(self):
-        """
-        Returns the next row of data to be prossest
-        """
+        """ Returns the next row of data to be prossest """
 
         row = self.conn.cursor().fetchone()[self.line]
         self.line += 1
