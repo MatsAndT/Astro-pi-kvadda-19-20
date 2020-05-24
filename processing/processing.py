@@ -5,19 +5,33 @@ from time_to_position import TimeToLatLon
 from urllib.request import urlopen
 import json
 
+row_length = 709
 db_path = '../data/teamkvadda_data_database.sqlite'
 csv_path = '../data/co2_2018.csv'
 time_zone = '+0000'
 
 def main(folder, db):
-    db_handeler = Data(db_path, csv_path)
+    data_handeler = Data(db_path, csv_path)
+    data_handeler.add_colum()
     ttp = TimeToLatLon()
 
-    while True:
-        row = db_handeler.next()
+    for i in range(row_length):
+        print('processing row {}'.format(i))
+        row = data_handeler.next()
         lat, lon = ttp.convert(row['time']+time_zone)
-
+        print('lat: {}, lon: {}'.format(lat, lon))
         town, country = getplace(lat, lon)
+        print('town: {}, country: {}'.format(town, country))
+        co2 = data_handeler.get_co2(country)
+        print('co2: {}'.format(co2))
+        
+        data_handeler.add_data(row['id'], town, country, co2, lat, lon)
+        print('added new data to database')
+        print('\n\n')
+
+    data_handeler.close_conn()
+    ttp.quit()
+
 
 ### https://stackoverflow.com/a/20169528/7419883
 def getplace(lat, lon):
