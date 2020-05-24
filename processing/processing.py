@@ -13,14 +13,14 @@ def main(folder, db, row_length, csv_path):
     ttp = TimeToLatLon()
 
     for i in range(row_length):
-        print('processing row {}'.format(i))
+        print('processing row %s' % i)
         row = data_handeler.next()
         lat, lon = ttp.convert(row['time']+time_zone)
-        print('lat: {}, lon: {}'.format(lat, lon))
+        print('lat: %s, lon: %s' % (lat, lon))
         town, country = getplace(lat, lon)
-        print('town: {}, country: {}'.format(town, country))
+        print('town: %s, country: %s' % (town, country))
         co2 = data_handeler.get_co2(country)
-        print('co2: {}'.format(co2))
+        print('co2: %s' % co2)
         
         data_handeler.add_data(row['id'], town, country, co2, lat, lon)
         print('added new data to database')
