@@ -13,7 +13,7 @@ def main(folder, db, row_length, csv_path):
     ttp = TimeToLatLon()
 
     for i in range(row_length):
-        print('processing row %s' % i)
+        print('processing row %x' % i)
         row = data_handeler.next()
         lat, lon = ttp.convert(row['time']+time_zone)
         print('lat: %s, lon: %s' % (lat, lon))
