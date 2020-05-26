@@ -54,4 +54,6 @@ if __name__ == "__main__":
     parser.add_argument('csv_path', help='path for co2 data', type=str)
     args = parser.parse_args()
 
-    main(args.fodler, args.db, args.row_lenght, args.csv_path)
+    main(args.pictures, args.db, args.row_length, args.csv_path)
+
+# python processing.py ../data/ ../data/teamkvadda_data_database.sqlite 709 ../data/co2_2018.csv
