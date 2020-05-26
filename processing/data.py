@@ -60,8 +60,7 @@ class Data:
 
     def next(self):
         ''' Returns the next row of data to be prossest '''
-
-        row = self.conn.cursor().fetchone()[self.line]
+        row = self.conn.cursor().execute('select * from sensor_data').fetchall()[self.line]
         self.line += 1
         return row
 
