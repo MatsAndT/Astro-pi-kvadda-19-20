@@ -21,7 +21,7 @@ class Data:
     def init_co2(self, path):
         ''' Sets up the co2 map, with data from the csv '''
         with open(path) as csvfile:
-            readCSV = csv.reader(csvfile, delimiter=',')
+            readCSV = [x for x in csv.reader(csvfile, delimiter=',')]
             countrys = readCSV[0]
             co2s = readCSV[1]
             
