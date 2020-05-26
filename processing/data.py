@@ -25,7 +25,7 @@ class Data:
             countrys = readCSV[0]
             co2s = readCSV[1]
             
-            for i in range(countrys):
+            for i in range(len(countrys)):
                 self.co2[countrys[i]] = co2s[i]
 
             print(self.co2)
