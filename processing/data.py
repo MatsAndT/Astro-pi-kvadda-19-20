@@ -28,7 +28,7 @@ class Data:
             for i in range(len(countrys)):
                 self.co2[countrys[i]] = co2s[i]
 
-            print(self.co2)
+            ##print(self.co2)
     
     def get_co2(self, country):
         return self.co2.get(country)
@@ -60,7 +60,7 @@ class Data:
 
     def next(self):
         ''' Returns the next row of data to be prossest '''
-        row = self.conn.cursor().execute('select * from sensor_data').fetchall()[self.line]
+        row = self.conn.cursor().execute('select id, time, img_name from sensor_data').fetchall()[self.line]
         self.line += 1
         return row
 

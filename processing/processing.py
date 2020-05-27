@@ -15,14 +15,16 @@ def main(folder, db, row_length, csv_path):
     for i in range(row_length):
         print('processing row %x' % i)
         row = data_handler.next()
-        lat, lon = ttp.convert(row['time']+time_zone)
+        # row[1] is the time
+        lat, lon = ttp.convert(row[1]+time_zone)
         print('lat: %s, lon: %s' % (lat, lon))
         town, country = getplace(lat, lon)
         print('town: %s, country: %s' % (town, country))
         co2 = data_handler.get_co2(country)
         print('co2: %s' % co2)
         
-        data_handler.add_data(row['id'], town, country, co2, lat, lon)
+        # row[0] is the id
+        data_handler.add_data(row[0], town, country, co2, lat, lon)
         print('added new data to database')
         print('\n\n')
 
