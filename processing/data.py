@@ -36,26 +36,28 @@ class Data:
     def add_column(self):
         '''
         Add five column to the databse
-        town : string
+        name : string
+        region : string
         county : string
         cotwo : string, it is for the co2 from the sheet
         lat : string
         lon : string
         '''
         cur = self.conn.cursor()
-        cur.execute('alter table sensor_data add column town string')
+        cur.execute('alter table sensor_data add column name string')
+        cur.execute('alter table sensor_data add column region string')
         cur.execute('alter table sensor_data add column country string')
         cur.execute('alter table sensor_data add column cotwo string')
         cur.execute('alter table sensor_data add column lat string')
         cur.execute('alter table sensor_data add column lon string')
         self.conn.commit()
     
-    def add_data(self, _id, town, country, co2, lat, lon):
+    def add_data(self, _id, name, region, country, co2, lat, lon):
         ''' Adds new data from internett to database '''
-        sql = 'UPDATE sensor_data SET town = ?, country = ?, cotwo = ?, lat = ?, lon = ? WHERE id = ?'
+        sql = 'UPDATE sensor_data SET name = ?, region = ?, country = ?, cotwo = ?, lat = ?, lon = ? WHERE id = ?'
         
         cur = self.conn.cursor()
-        cur.execute(sql, (town, country, co2, lat, lon, _id))
+        cur.execute(sql, (name, region, country, co2, lat, lon, _id))
         self.conn.commit()
 
     def next(self):

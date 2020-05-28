@@ -3,6 +3,7 @@ from data import Data
 from time_to_position import TimeToLatLon
 import requests
 import json
+import reverse_geocoder as rg
 
 time_zone = '+0000'
 
@@ -18,13 +19,13 @@ def main(folder, db, row_length, csv_path):
         # row[1] is the time
         lat, lon = ttp.convert(row[1]+time_zone)
         print('lat: %s, lon: %s' % (lat, lon))
-        town, country = getplace(lat, lon)
-        print('town: %s, country: %s' % (town, country))
+        name, region, country = getplace(lat, lon)
+        print('name: %s, region: %s, country: %s' % (name, region, country))
         co2 = data_handler.get_co2(country)
         print('co2: %s' % co2)
         
         # row[0] is the id
-        data_handler.add_data(row[0], town, country, co2, lat, lon)
+        data_handler.add_data(row[0], name, region, country, co2, lat, lon)
         print('added new data to database')
         print('\n\n')
 
@@ -34,18 +35,19 @@ def main(folder, db, row_length, csv_path):
 # https://stackoverflow.com/a/20169528/7419883
 def getplace(lat, lon):
     ''' Convert lat and lon to a place on the map with town and country '''
-    url = "http://maps.googleapis.com/maps/api/geocode/json?"
-    url += "latlng=%s,%s&sensor=false" % (lat, lon)
-    v = requests.get(url)
-    j = json.loads(v)
-    components = j['results'][0]['address_components']
-    country = town = None
-    for c in components:
-        if "country" in c['types']:
-            country = c['long_name']
-        if "postal_town" in c['types']:
-            town = c['long_name']
-    return town, country
+    results = rg.search((lat, lon))[0]
+    code = results['cc']
+    name = results['name']
+    region = results['admin1']
+
+    try:
+        res = requests.get('https://restcountries.eu/rest/v2/alpha/'+code)
+        country = res.json()['name']
+    except:
+        print('Did not get country name')
+        country = ''
+    
+    return name, region, country
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process some iss data.')
