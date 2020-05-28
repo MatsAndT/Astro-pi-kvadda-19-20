@@ -43,8 +43,9 @@ def getplace(lat, lon):
     try:
         res = requests.get('https://restcountries.eu/rest/v2/alpha/'+code)
         country = res.json()['name']
-    except:
+    except Exception as e:
         print('Did not get country name')
+        print(e)
         country = ''
     
     return name, region, country
