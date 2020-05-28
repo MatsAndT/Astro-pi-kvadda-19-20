@@ -2,15 +2,17 @@ import os
 import sqlite3
 from sqlite3 import Error
 import csv
+import shutil
 
 
 class Data:
     line = 0
     co2 = {}
 
-    def __init__(self, db_path, csv_path):
+    def __init__(self, db_path, csv_path, folder):
         super().__init__()
 
+        self.img_folder = folder
         self.init_co2(csv_path)
 
         try:
@@ -65,6 +67,15 @@ class Data:
         row = self.conn.cursor().execute('select id, time, img_name from sensor_data').fetchall()[self.line]
         self.line += 1
         return row
+
+    def change_img_folder(self, img_name, country):
+        try:
+            os.renames(self.img_folder+'/'+img_name+'.png', self.img_folder+'/imgs/'+country+'/'+img_name+'.png')
+            print(f'img new path: imgs/{country}/{img_name}.png')
+        except Exception as e:
+            print(f'did not manage to move img: {img_name} to {country}')
+            print(e)
+
 
     def close_conn(self):
         self.conn.close()

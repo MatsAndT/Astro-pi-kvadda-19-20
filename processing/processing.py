@@ -9,7 +9,7 @@ time_zone = '+0000'
 
 
 def main(folder, db, row_length, csv_path):
-    data_handler = Data(db, csv_path)
+    data_handler = Data(db, csv_path, folder)
     data_handler.add_column()
     ttp = TimeToLatLon()
 
@@ -23,6 +23,8 @@ def main(folder, db, row_length, csv_path):
         print(f'name: {name}, region: {region}, country: {country}')
         co2 = data_handler.get_co2(country)
         print(f'co2: {co2}')
+        # row[2] is the img_name
+        data_handler.change_img_folder(row[2], country)        
         
         # row[0] is the id
         data_handler.add_data(row[0], name, region, country, co2, lat, lon)
