@@ -14,15 +14,15 @@ def main(folder, db, row_length, csv_path):
     ttp = TimeToLatLon()
 
     for i in range(row_length):
-        print('processing row %x' % i)
+        print(f'processing row {i}')
         row = data_handler.next()
         # row[1] is the time
         lat, lon = ttp.convert(row[1]+time_zone)
-        print('lat: %s, lon: %s' % (lat, lon))
+        print(f'lat: {lat}, lon: {lon}')
         name, region, country = getplace(lat, lon)
-        print('name: %s, region: %s, country: %s' % (name, region, country))
+        print(f'name: {name}, region: {region}, country: {country}')
         co2 = data_handler.get_co2(country)
-        print('co2: %s' % co2)
+        print(f'co2: {co2}')
         
         # row[0] is the id
         data_handler.add_data(row[0], name, region, country, co2, lat, lon)
