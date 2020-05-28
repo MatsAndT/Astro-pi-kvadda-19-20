@@ -12,7 +12,8 @@ class Data:
     def __init__(self, db_path, csv_path, folder):
         super().__init__()
 
-        self.img_folder = folder
+        self.img_folder = os.path.abspath(os.getcwd()+'/'+folder)
+        print(f'img folder: {self.img_folder}')
         self.init_co2(csv_path)
 
         try:
@@ -69,11 +70,12 @@ class Data:
         return row
 
     def change_img_folder(self, img_name, country):
+        name_start = 'teamkvadda_data_imgs_'
         try:
-            os.renames(self.img_folder+'/'+img_name+'.png', self.img_folder+'/imgs/'+country+'/'+img_name+'.png')
-            print(f'img new path: imgs/{country}/{img_name}.png')
+            os.renames(self.img_folder+'/'+name_start+str(img_name)+'.jpg', self.img_folder+'/'+'imgs/'+country+'/'+name_start+str(img_name)+'.png')
+            print(f'img new path: imgs/{country}/{str(img_name)}.png')
         except Exception as e:
-            print(f'did not manage to move img: {img_name} to {country}')
+            print(f'did not manage to move img: {str(img_name)} to {country}')
             print(e)
 
 
