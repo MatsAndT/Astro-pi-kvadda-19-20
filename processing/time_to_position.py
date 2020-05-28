@@ -1,6 +1,7 @@
 import ephem
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+import time
 
 
 class TimeToLatLon:
@@ -36,6 +37,7 @@ class TimeToLatLon:
         search_form.clear()
         search_form.send_keys(time_text)
         self.driver.find_element_by_id('submitLookup').click()
+        time.sleep(3)
 
     def get_lat_lon(self):
         ''' Gets lat and lon from the html '''
