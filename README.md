@@ -12,3 +12,6 @@
 - Lasse Junker Jensen - Vg2 Computers and electronics
 - Mats Andreas Tønnesland - Vg2 Engineering road
 - Pyotr Karbovskiy-Kjellman - Vg2 Engineering road
+
+## Sources
+- co2 emissions in [co2_2018.csv](co2_2018.csv) (this file is change from the original) : http://www.globalcarbonatlas.org/en/CO2-emissions
